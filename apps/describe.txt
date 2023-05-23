@@ -1,0 +1,15 @@
+-- 问题说明
+- 1.mac 下载mysqldb 之后 启动报错
+@rpath/libmysqlclient.21.dylib
+修复
+进入到虚拟环境venv的这个目录下
+-- 你python下载包 安装的 ySQLdb目录
+venv/lib/python3.10/site-packages/MySQLdb
+然后执行命令（根据MySQLdb版本不同，文件可能不一样）
+-- 一般都会存在
+otool -L _mysql.cpython-39-darwin.so
+然后执行命令
+-- /usr/local/mysql/lib/libmysqlclient.21.dylib 你的libmysqlclient.21.dylib 所在 一般是在  /usr/local/mysql-8.0.30-macos12-arm64/lib/libmysqlclient.21.dylib
+install_name_tool -change @rpath/libmysqlclient.21.dylib /usr/local/mysql/lib/libmysqlclient.21.dylib _mysql.cpython-39-darwin.so
+
+-- 2.
