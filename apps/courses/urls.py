@@ -17,9 +17,5 @@ Including another URLconf
 from django.urls import path, include
 
 urlpatterns = [
-    # path('admin/', admin.site.urls),
-    # path('users/', include('users.urls', namespace='users')),
-    path(r'^courses/', include('courses.urls', namespace='courses')),
-    # path('orgs/', include('orgs.urls', namespace='orgs')),
-    # path('operations/', include('operations.urls', namespace='operations')),
+    # path(r'^courses/', include(('courses.urls', 'courses'), namespace='courses')),
 ]

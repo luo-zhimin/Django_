@@ -12,4 +12,21 @@ otool -L _mysql.cpython-39-darwin.so
 -- /usr/local/mysql/lib/libmysqlclient.21.dylib 你的libmysqlclient.21.dylib 所在 一般是在  /usr/local/mysql-8.0.30-macos12-arm64/lib/libmysqlclient.21.dylib
 install_name_tool -change @rpath/libmysqlclient.21.dylib /usr/local/mysql/lib/libmysqlclient.21.dylib _mysql.cpython-39-darwin.so
 
--- 2.
+-- 2.urls 配置
+配置路由
+在主的里面配置一个总的就可以 其他进行分发
+-- 主的配置 子的里面不需要在单独配置
+urlpatterns = [
+    path(r'^admin/', admin.site.urls),
+    path(r'^users/', include(('users.urls', 'users'), namespace='users')),
+    path(r'^courses/', include(('courses.urls', 'courses'), namespace='courses')),
+    path(r'^orgs/', include(('orgs.urls', 'orgs'), namespace='orgs')),
+    path(r'^operations/', include(('operations.urls', 'operations'), namespace='operations')),
+]
+
+-- 3. python3 manage.py makemigrations
+在 Django 项目中，`python3 manage.py makemigrations` 是用于生成 Django 项目中数据库迁移脚本的命令。当你修改了 Django 项目中的模型，
+比如新增、删除或修改字段等操作时，需要使用该命令来生成相应的迁移脚本，以便在之后的数据库迁移操作中使用。
+
+具体来说，`makemigrations` 命令会检测 Django 项目中的所有模型和数据库表的变化，并生成对应的 Python 脚本文件，这些脚本文件称之为「迁移脚本（migrations）」
+，它们描述了如何升级或降级数据库模式。在执行 `python3 manage.py migrate` 命令时，Django 将会根据迁移脚本的信息，自动升级或降级数据库的模式。

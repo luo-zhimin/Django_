@@ -5,7 +5,7 @@ from datetime import datetime
 # Create your models here.
 class CityInfo(models.Model):
     name = models.CharField(max_length=20, verbose_name='城市名称')
-    add_time = models.DateTimeField(datetime.now, verbose_name='添加时间')
+    add_time = models.DateTimeField(default=datetime.now, verbose_name='添加时间')
 
     def __str__(self):
         return self.name
@@ -30,9 +30,9 @@ class OrgInfo(models.Model):
     category = models.CharField(choices=(('pxjg', '培训机构'), ('gx', '高校'), ('gr', '个人')), max_length=10,
                                 verbose_name='机构类别')
     # 关联关系
-    city_info = models.ForeignKey(CityInfo, verbose_name='所在城市', on_delete=0)
+    city_info = models.ForeignKey(CityInfo, verbose_name='所在城市', on_delete=models.CASCADE)
 
-    add_time = models.DateTimeField(datetime.now, verbose_name='添加时间')
+    add_time = models.DateTimeField(default=datetime.now, verbose_name='添加时间')
 
     def __str__(self):
         return self.name
@@ -49,7 +49,7 @@ class TeacherInfo(models.Model):
     work_position = models.CharField(max_length=20, verbose_name='工作职位')
     work_style = models.CharField(max_length=20, verbose_name='教学特点')
     # 外键 机构
-    work_company = models.ForeignKey(OrgInfo, verbose_name='所属机构', on_delete=0)
+    work_company = models.ForeignKey(OrgInfo, verbose_name='所属机构', on_delete=models.CASCADE)
     age = models.IntegerField(default=30, verbose_name='教师年龄')
 
     love_num = models.IntegerField(default=0, verbose_name='收藏数')
@@ -58,7 +58,7 @@ class TeacherInfo(models.Model):
     # 课程
     # 待补充
 
-    add_time = models.DateTimeField(datetime.now, verbose_name='添加时间')
+    add_time = models.DateTimeField(default=datetime.now, verbose_name='添加时间')
 
     def __str__(self):
         return self.name
