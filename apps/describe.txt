@@ -30,3 +30,10 @@ urlpatterns = [
 
 具体来说，`makemigrations` 命令会检测 Django 项目中的所有模型和数据库表的变化，并生成对应的 Python 脚本文件，这些脚本文件称之为「迁移脚本（migrations）」
 ，它们描述了如何升级或降级数据库模式。在执行 `python3 manage.py migrate` 命令时，Django 将会根据迁移脚本的信息，自动升级或降级数据库的模式。
+
+迁移命令
+python3 manage.py makemigrations
+创建数据库表
+python3 manage.py migrate
+创建超级用户
+python3 manage.py createsuperuser

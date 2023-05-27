@@ -17,10 +17,13 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path, include
 
+# import xadmin
+
 urlpatterns = [
-    path(r'^admin/', admin.site.urls),
-    path(r'^users/', include(('users.urls', 'users'), namespace='users')),
-    path(r'^courses/', include(('courses.urls', 'courses'), namespace='courses')),
-    path(r'^orgs/', include(('orgs.urls', 'orgs'), namespace='orgs')),
-    path(r'^operations/', include(('operations.urls', 'operations'), namespace='operations')),
+    path('admin/', admin.site.urls),
+    # path('xadmin/', xadmin.site.urls),
+    path('users/', include(('users.urls', 'users'), namespace='users')),
+    path('courses/', include(('courses.urls', 'courses'), namespace='courses')),
+    path('orgs/', include(('orgs.urls', 'orgs'), namespace='orgs')),
+    path('operations/', include(('operations.urls', 'operations'), namespace='operations')),
 ]
