@@ -16,14 +16,17 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
+from django.conf.urls.static import static
+from Django_ import settings
+from users.views import index
 
 urlpatterns = [
     # 首页直接进行跳转
-    path('', admin.site.urls),
+    path('', index, name='index'),
     path('admin/', admin.site.urls),
     # path('xadmin/', xadmin.site.urls),
     path('users/', include(('users.urls', 'users'), namespace='users')),
     path('courses/', include(('courses.urls', 'courses'), namespace='courses')),
     path('orgs/', include(('orgs.urls', 'orgs'), namespace='orgs')),
     path('operations/', include(('operations.urls', 'operations'), namespace='operations')),
-]
+] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
