@@ -1,7 +1,8 @@
 from django.shortcuts import render, redirect, reverse
-from .forms import UserRegisterForm
+from .forms import UserRegisterForm, UserLoginForm
 from .models import UserProfile
 from django.db.models import Q
+from django.contrib.auth import authenticate, login, logout
 
 
 # Create your views here.
@@ -38,4 +39,27 @@ def user_register(request):
         else:
             return render(request, 'register.html', {
                 'msg': user_register_form
+            })
+
+
+def user_login(request):
+    if request.method == 'GET':
+        return render(request, 'login.html')
+    else:
+        user_login_form = UserLoginForm(request.POST)
+        if user_login_form.is_valid():
+            email = user_login_form.cleaned_data['email']
+            password = user_login_form.cleaned_data['password']
+
+            user = authenticate(username=email, password=password)
+            if user:
+                login(request, user)
+                return redirect(reverse('index'))
+            else:
+                return render(request, 'login.html', {
+                    'msg': '邮箱或者密码错误'
+                })
+        else:
+            return render(request, 'login.html', {
+                'msg': user_login_form
             })

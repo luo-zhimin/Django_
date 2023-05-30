@@ -17,8 +17,10 @@ Including another URLconf
 from django.urls import path
 
 from .views import user_register
+from .views import user_login
 
 urlpatterns = [
     # name 必须是 'xxx'
-    path('user_register/', user_register, name='user_register')
+    path('user_register/', user_register, name='user_register'),
+    path('user_login/', user_login, name='user_login')
 ]
