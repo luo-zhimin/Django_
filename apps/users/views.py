@@ -1,4 +1,4 @@
-from django.shortcuts import render, redirect, reverse
+from django.shortcuts import render, redirect, reverse, HttpResponse
 from .forms import UserRegisterForm, UserLoginForm
 from .models import UserProfile
 from django.db.models import Q
@@ -13,7 +13,11 @@ def index(request):
 
 def user_register(request):
     if request.method == 'GET':
-        return render(request, 'register.html')
+        # 验证码
+        user_register_form = UserRegisterForm()
+        return render(request, 'register.html', {
+            'user_register_form': user_register_form
+        })
     else:
         user_register_form = UserRegisterForm(request.POST)
         if user_register_form.is_valid():
@@ -53,8 +57,12 @@ def user_login(request):
 
             user = authenticate(username=email, password=password)
             if user:
-                login(request, user)
-                return redirect(reverse('index'))
+                # 控制是否激活
+                if user.status:
+                    login(request, user)
+                    return redirect(reverse('index'))
+                else:
+                    return HttpResponse("请去您的邮箱进行激活操作，否则无法登陆")
             else:
                 return render(request, 'login.html', {
                     'msg': '邮箱或者密码错误'
@@ -63,3 +71,8 @@ def user_login(request):
             return render(request, 'login.html', {
                 'msg': user_login_form
             })
+
+
+def user_logout(request):
+    logout(request)
+    return redirect(reverse('index'))

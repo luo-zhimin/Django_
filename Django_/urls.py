@@ -24,6 +24,7 @@ urlpatterns = [
     # 首页直接进行跳转
     path('', index, name='index'),
     path('admin/', admin.site.urls),
+    path('captcha/', include('captcha.urls')),
     # path('xadmin/', xadmin.site.urls),
     path('users/', include(('users.urls', 'users'), namespace='users')),
     path('courses/', include(('courses.urls', 'courses'), namespace='courses')),

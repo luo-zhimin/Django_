@@ -13,6 +13,7 @@ class UserProfile(AbstractUser):
                               default='gril')
     address = models.CharField(max_length=200, verbose_name='用户地址', null=True, blank=True)
     phone = models.CharField(max_length=11, verbose_name='用户手机', null=True, blank=True)
+    status = models.BooleanField(default=False, verbose_name='是否激活')
     add_time = models.DateTimeField(default=datetime.now, verbose_name='添加时间')
 
     def __str__(self):
