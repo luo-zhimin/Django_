@@ -146,3 +146,11 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 SIMPLEUI_HOME_INFO = False
+
+# 配置邮箱
+EMAIL_HOST = 'smtp.163.com'
+EMAIL_PORT = 25
+EMAIL_HOST_USER = 'luozhimin2023@163.com'
+EMAIL_HOST_PASSWORD = 'SSOYMEHDYFTNRKNQ'
+DEFAULT_FROM_EMAIL = 'luozhimin2023@163.com'
+# EMAIL_USE_TLS = True

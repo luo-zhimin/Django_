@@ -1,6 +1,7 @@
 from datetime import datetime
-from django.db import models
+
 from django.contrib.auth.models import AbstractUser
+from django.db import models
 
 
 # Create your models here.
@@ -42,6 +43,7 @@ class EmailVerifyCode(models.Model):
     # 补充字段
     code = models.CharField(max_length=20, verbose_name='邮箱验证码')
     email = models.EmailField(max_length=200, verbose_name='验证码邮箱')
+    # 1 注册  2 重置密码  3 修改邮箱
     send_type = models.IntegerField(choices=((1, 'register'), (2, 'forget'), (3, 'change')), default=1,
                                     verbose_name='验证码类型')
     add_time = models.DateTimeField(default=datetime.now, verbose_name='添加时间')

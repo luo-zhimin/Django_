@@ -1,8 +1,10 @@
-from django.shortcuts import render, redirect, reverse, HttpResponse
-from .forms import UserRegisterForm, UserLoginForm
-from .models import UserProfile
-from django.db.models import Q
 from django.contrib.auth import authenticate, login, logout
+from django.db.models import Q
+from django.shortcuts import render, redirect, reverse, HttpResponse
+
+from utils.send_mail_tool import send_email_code
+from .forms import UserRegisterForm, UserLoginForm
+from .models import UserProfile, EmailVerifyCode
 
 
 # Create your views here.
@@ -26,6 +28,7 @@ def user_register(request):
 
             # 查询数据库
             user_list = UserProfile.objects.filter(Q(username=email) | Q(email=email))
+            print(f"user_register: {user_list}")
             if user_list:
                 return render(request, 'register.html', {
                     'msg': '用户已经存在'
@@ -39,7 +42,11 @@ def user_register(request):
                 user.save()
                 # redirect 函数可以将用户重定向到指定的 URL
                 # reverse 函数则是用于根据 URL 名称解析出对应的 URL 地址
-                return redirect(reverse('index'))
+
+                # 发送邮件
+                send_email_code(email, 1)
+                # return redirect(reverse('index'))
+                return HttpResponse("请尽快前往您的邮箱进行激活，否则无法登陆")
         else:
             return render(request, 'register.html', {
                 'msg': user_register_form
@@ -76,3 +83,27 @@ def user_login(request):
 def user_logout(request):
     logout(request)
     return redirect(reverse('index'))
+
+
+def user_active(request, code):
+    print(fr'active code:{code}')
+    if code:
+        # 是否会有问题 一个码出现多次 是否需要加用户的标识 有几率出现
+        email_verify_list = EmailVerifyCode.objects.filter(code=code)
+        if email_verify_list:
+            email_verify = email_verify_list[0]
+            email = email_verify.email
+            user_list = UserProfile.objects.filter(username=email)
+            # 修改 激活
+            if user_list:
+                user = user_list[0]
+                user.status = True
+                user.save()
+                return redirect(reverse('users:user_login'))
+            else:
+                print(fr'this code:{code} not find user:{email}')
+                return HttpResponse('该用户不存在，请确认后重新登陆')
+        else:
+            return HttpResponse('验证码不存在，请重新获取')
+    else:
+        return HttpResponse('验证码不存在，请重新获取')
