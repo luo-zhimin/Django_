@@ -55,10 +55,18 @@
                         <label>密&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;码</label>
                         <input name="password" id="password_l" type="password" placeholder="请输入您的密码"/>
                     </div>
-                    <div class="error btns login-form-tips" id="jsLoginTips"></div>
+
+                    <div class="error btns login-form-tips" id="jsLoginTips">
+                        {{ msg }}
+                        {% for key,err in user_login_form.errors.items%}
+                            {{ err }}
+                        {% endfor %}
+                    </div>
+
+
                     <div class="auto-box marb38">
 
-                        <a class="fr" href="forgetpwd.html">忘记密码？</a>
+                        <a class="fr" href="{% url 'users:user_forget' %}">忘记密码？</a>
                     </div>
                     <input class="btn btn-green" id="jsLoginBtn" type="submit" value="立即登录 > "/>
                 </form>

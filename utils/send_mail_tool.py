@@ -27,9 +27,16 @@ def send_email_code(email, send_type):
     # 发送邮件
     send_title = ''
     send_body = ''
+    print(fr'send_email_code email:{email} send_type:{send_type}')
     if send_type == 1:
         send_title = '欢迎注册爱时尚教育'
         send_body = '请点击以下链接进行激活您的账号：\n' \
                     'http://localhost:8000/users/user_active/' + code
+    elif send_type == 2:
+        send_title = '爱时尚教育重置密码'
+        send_body = '请点击以下链接进行重置您的密码：\n' \
+                    'http://localhost:8000/users/user_reset/' + code
+    elif send_type == 3:
+        pass
     # send
     send_mail(send_title, send_body, DEFAULT_FROM_EMAIL, [email])
