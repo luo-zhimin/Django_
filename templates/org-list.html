@@ -6,6 +6,7 @@
 {% block content %}
 
     {% load static %}
+
     <section>
         <div class="wp">
             <ul class="crumbs">
@@ -23,44 +24,86 @@
                         <li>
                             <h2>机构类别</h2>
                             <div class="cont">
-                                <a href="?city="><span class="active2">全部</span></a>
+                                <a href="?city_id={{ city_id }}&sort={{ sort }}">
+                                    <span {% if category == '' %} class="active2" {% endif %}>
+                                        全部
+                                    </span>
+                                </a>
 
-                                <a href="?ct=pxjg&city="><span class="">培训机构</span></a>
+                                <a href="?category=pxjg&city_id={{ city_id }}&sort={{ sort }}">
+                                    <span {% if category == 'pxjg' %}
+                                        class="active2" {% endif %}>
+                                        培训机构
+                                    </span>
+                                </a>
 
-                                <a href="?ct=gx&city="><span class="">高校</span></a>
+                                <a href="?category=gx&city_id={{ city_id }}&sort={{ sort }}">
+                                    <span {% if category == 'gx' %}
+                                        class="active2" {% endif %}>
+                                        高校
+                                    </span>
+                                </a>
 
-                                <a href="?ct=gr&city="><span class="">个人</span></a>
+                                <a href="?category=gr&city_id={{ city_id }}&sort={{ sort }}">
+                                    <span {% if category == 'gr' %}
+                                        class="active2" {% endif %}>
+                                        个人
+                                    </span>
+                                </a>
 
                             </div>
                         </li>
+
                         <li>
                             <h2>所在地区</h2>
                             <div class="more">更多</div>
                             <div class="cont">
-                                <a href="?ct="><span class="active2">全部</span></a>
+                                <a href="?category={{ category }}&sort={{ sort }}">
+                                    <span {% if city_id == '' %} class="active2" {% endif %}>
+                                        全部
+                                    </span>
+                                </a>
                                 {% for city in all_cites %}
-                                    <a href="?city=1&ct=">
-                                        <span class="">
+                                    <a href="?city_id={{ city.id }}&category={{ category }}&sort={{ sort }}">
+                                        {# == 数字和字符串 ｜过滤器 stringformat:"i" 固定转化 python 语法 数字转为字符串  #}
+                                        <span {% if city_id == city.id|stringformat:"i" %} class="active2" {% endif %}>
                                             {{ city.name }}
                                         </span>
                                     </a>
                                 {% endfor %}
                             </div>
                         </li>
+
                     </ul>
                 </div>
 
-                <div class="all">共
-                    <span class="key">{{ all_orgs.count }}</span>家
+                <div class="all">
+                    共
+                    <span class="key">
+                        {{ all_orgs.count }}
+                    </span>
+                    家
                 </div>
 
                 <div class="butler_list company list">
                     <div class="layout">
                         <div class="head">
                             <ul class="tab_header">
-                                <li class="active"><a href="?ct=&city=">全部</a></li>
-                                <li class=""><a href="?sort=students&ct=&city=">学习人数 &#8595;</a></li>
-                                <li class=""><a href="?sort=courses&ct=&city=">课程数 &#8595;</a></li>
+                                <li {% if sort == '' %} class="active" {% endif %}>
+                                    <a href="?category={{ category }}&city_id={{ city_id }}">
+                                        全部
+                                    </a>
+                                </li>
+                                <li {% if sort == 'study_num' %} class="active" {% endif %}>
+                                    <a href="?sort=study_num&category={{ category }}&city_id={{ city_id }}">
+                                        学习人数&#8595;
+                                    </a>
+                                </li>
+                                <li {% if sort == 'course_num' %} class="active" {% endif %}>
+                                    <a href="?sort=course_num&category={{ category }}&city_id={{ city_id }}">
+                                        课程数&#8595;
+                                    </a>
+                                </li>
                             </ul>
                         </div>
 
@@ -121,7 +164,9 @@
                         <ul class="pagelist">
                             {% if pages.has_previous %}
                                 <li class="long">
-                                    <a href="?pagenum={{ pages.previous_page_number }}">上一页</a>
+                                    <a href="?pagenum={{ pages.previous_page_number }}&category={{ category }}&city_id={{ city_id }}&sort={{ sort }}">
+                                        上一页
+                                    </a>
                                 </li>
                             {% endif %}
 
@@ -132,13 +177,17 @@
                                             class="active"
                                         {% endif %}
                                 >
-                                    <a href="?pagenum={{ num }}">{{ num }}</a>
+                                    <a href="?pagenum={{ num }}&category={{ category }}&city_id={{ city_id }}&sort={{ sort }}">
+                                        {{ num }}
+                                    </a>
                                 </li>
                             {% endfor %}
 
                             {% if pages.has_next %}
                                 <li class="long">
-                                    <a href="?pagenum={{ pages.next_page_number }}">下一页</a>
+                                    <a href="?pagenum={{ pages.next_page_number }}&category={{ category }}&city_id={{ city_id }}&sort={{ sort }}">
+                                        下一页
+                                    </a>
                                 </li>
                             {% endif %}
                         </ul>
