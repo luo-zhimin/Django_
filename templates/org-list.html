@@ -209,10 +209,10 @@
                     </div>
                     <div>
                         <img src="{% static '/images/rightform3.png' %}"/>
-                        <input type="text" name="course_name" id="companyAddress" placeholder="课程名" maxlength="50"/>
+                        <input type="text" name="course_name" id="courseName" placeholder="课程名" maxlength="50"/>
                     </div>
                     <p class="error company-tips" id="jsCompanyTips"></p>
-                    <input class="btn" type="text" id="jsStayBtn" value="立即咨询 >"/>
+                    <input class="btn" type="submit" id="jsStayBtn" value="立即咨询 >"/>
                     <input type='hidden' name='csrfmiddlewaretoken' value='5I2SlleZJOMUX9QbwYLUIAOshdrdpRcy'/>
                 </form>
             </div>
@@ -236,4 +236,43 @@
         </div>
     </section>
 
+{% endblock %}
+
+{% block js %}
+    <script>
+
+        {#ajax#}
+        $(function () {
+            {#let btn = document.getElementById('jsStayBtn');#}
+            $('#jsStayBtn').click(function () {
+                let name = $('#companyName').val()
+                let mobile = $('#companyMobile').val()
+                let course = $('#courseName').val()
+                $.ajax({
+                    type: 'POST',
+                    url: '{% url 'operations:user_ask' %}',
+                    data: {
+                        name: name,
+                        phone: mobile,
+                        course: course,
+                        csrfmiddlewaretoken: '{{ csrf_token }}'
+                    },
+                    success: function (callback) {
+                        if (callback.status === 200) {
+                            $('#companyName').val('');
+                            $('#companyMobile').val('');
+                            $('#courseName').val('');
+                            {#alert(callback.msg)#}
+                            $('#jsCompanyTips').text('')
+                        } else {
+                            {#alert(callback.msg)#}
+                            $('#jsCompanyTips').text(callback.msg)
+                        }
+                    }
+                })
+                {# submit 不想要提交动作 返回false 阻止提交动作  #}
+                return false;
+            })
+        })
+    </script>
 {% endblock %}
