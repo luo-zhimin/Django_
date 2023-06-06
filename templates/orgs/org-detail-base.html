@@ -15,7 +15,8 @@
 
     <div class="middle companyheader">
         <div class="wp">
-            <img class="fl" style="width: 112px;height: 103px" src="{{ MEDIA_URL }}{{ org.image }}" alt="{{ org.name }}"/>
+            <img class="fl" style="width: 112px;height: 103px" src="{{ MEDIA_URL }}{{ org.image }}"
+                 alt="{{ org.name }}"/>
             <div class="head fl">
                 <h1>
                     爱时尚教育网
@@ -29,8 +30,8 @@
                 </p>
             </div>
             <div class="btn fr collectionbtn  notlogin
-                 " data-favid="22" data-fav-type="1">
-                收藏
+                 " data-favid="22" data-fav-type="1" id="love">
+                 {% if love_status %} 取消收藏 {% else %} 收藏 {% endif %}
             </div>
 
         </div>
@@ -116,7 +117,26 @@
 
     <script>
         {#收藏分享#}
-
+        $('#love').click(function () {
+            {#let love_id = {{ org.id }};#}
+            {#let love_type= 1;#}
+            $.ajax({
+                type: 'GET',
+                url: '{% url "operations:user_love" %}',
+                data: {
+                    love_id:{{ org.id }},
+                    {# 1 org 2 course 3 teacher #}
+                    love_type: 1
+                },
+                success: function (callback) {
+                    if (callback.status === 200) {
+                        $('#love').text(callback.msg)
+                    } else {
+                        alert(callback.msg)
+                    }
+                }
+            })
+        })
     </script>
 
     {% block js1 %} {% endblock %}

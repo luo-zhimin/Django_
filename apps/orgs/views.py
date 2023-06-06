@@ -1,6 +1,7 @@
 from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
 from django.shortcuts import render
 
+from operations.models import UserLoveInfo
 from .models import OrgInfo, CityInfo
 
 
@@ -49,8 +50,11 @@ def org_list(request):
 def org_detail(request, org_id):
     if org_id:
         org = OrgInfo.objects.filter(id=int(org_id))[0]
+        love_status = get_love_status(request, org_id)
+
         return render(request, 'orgs/org-detail-homepage.html', {
-            'org': org
+            'org': org,
+            'love_status': love_status
         })
 
 
@@ -68,23 +72,42 @@ def org_detail_course(request, org_id):
         except EmptyPage:
             pages = pa.page(pa.num_pages)
 
+        love_status = get_love_status(request, org_id)
+
         return render(request, 'orgs/org-detail-course.html', {
             'org': org,
-            'pages': pages
+            'pages': pages,
+            'love_status': love_status
         })
 
 
 def org_detail_desc(request, org_id):
     if org_id:
         org = OrgInfo.objects.filter(id=int(org_id))[0]
+        love_status = get_love_status(request, org_id)
         return render(request, 'orgs/org-detail-desc.html', {
-            'org': org
+            'org': org,
+            'love_status': love_status
         })
 
 
 def org_detail_teachers(request, org_id):
     if org_id:
         org = OrgInfo.objects.filter(id=int(org_id))[0]
+        love_status = get_love_status(request, org_id)
         return render(request, 'orgs/org-detail-teachers.html', {
-            'org': org
+            'org': org,
+            'love_status': love_status
         })
+
+
+def get_love_status(request, org_id):
+    if request.user.is_authenticated:
+        print('get_love_status~~~')
+        love_list = UserLoveInfo.objects.filter(love_man=request.user, love_id=org_id, love_type=1)
+        if love_list:
+            return love_list[0].love_status
+        else:
+            return False
+    else:
+        return False

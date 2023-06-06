@@ -16,8 +16,9 @@ Including another URLconf
 """
 from django.urls import path
 
-from .views import user_ask
+from .views import user_ask, user_love
 
 urlpatterns = [
     path('user_ask/', user_ask, name='user_ask'),
+    path('user_love/', user_love, name='user_love'),
 ]
