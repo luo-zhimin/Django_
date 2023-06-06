@@ -15,12 +15,12 @@
 
     <div class="middle companyheader">
         <div class="wp">
-            <img class="fl" style="width: 112px;height: 103px" src="{{ MEDIA_URL }}{{ org.image }}"/>
+            <img class="fl" style="width: 112px;height: 103px" src="{{ MEDIA_URL }}{{ org.image }}" alt="{{ org.name }}"/>
             <div class="head fl">
                 <h1>
                     爱时尚教育网
-                    <img src="{% static 'images/authentication.png' %}"/>
-                    <img src="{% static 'images/gold.png' %}"/>
+                    <img src="{% static 'images/authentication.png' %}" alt="认证"/>
+                    <img src="{% static 'images/gold.png' %}" alt="金牌"/>
                 </h1>
                 <p class="fl">
                     <span class="fl" style="margin-top:8px;color:#848484;">推荐指数： </span>
@@ -54,32 +54,37 @@
         <div class="wp list personal_list comp">
             <div class="left">
                 <ul>
-                    <li class="active2">
-                        <a href="org-detail-homepage.html">
+
+                    <li {% if request.resolver_match.url_name == 'org_detail' %}
+                        class="active2" {% endif %}>
+
+                        <a href="{% url 'orgs:org_detail' org.id %}">
                             机构首页
                         </a>
                     </li>
-                    <li class="">
-                        <a href="org-detail-course.html">
+
+                    <li {% if request.resolver_match.url_name == 'org_detail_course' %} class="active2" {% endif %}>
+                        <a href="{% url 'orgs:org_detail_course' org.id %}">
                             机构课程
                         </a>
                     </li>
-                    <li class="">
-                        <a href="org-detail-desc.html">
+
+                    <li {% if request.resolver_match.url_name == 'org_detail_desc' %} class="active2" {% endif %}>
+                        <a href="{% url 'orgs:org_detail_desc' org.id %}">
                             机构介绍
                         </a>
                     </li>
-                    <li class="">
-                        <a href="org-detail-teachers.html">
+
+                    <li {% if request.resolver_match.url_name == 'org_detail_teachers' %} class="active2" {% endif %} >
+                        <a href="{% url 'orgs:org_detail_teachers' org.id %}">
                             机构讲师
                         </a>
                     </li>
+
                 </ul>
             </div>
 
-            {% block right %}
-
-            {% endblock %}
+            {% block right %}{% endblock %}
         </div>
 
     </section>
@@ -89,10 +94,8 @@
     <script type="text/javascript" src="{% static 'js/plugins/jquery.raty.js' %}"></script>
 
     <script type="text/javascript">
-        //收藏分享
-
         $(function () {
-            var $precision = $('.precision'),
+            let $precision = $('.precision'),
                 score = $precision.attr('data-star-scope'),
                 option = {
                     half: true,
@@ -109,6 +112,11 @@
                 };
             $precision.raty(option);
         })
+    </script>
+
+    <script>
+        {#收藏分享#}
+
     </script>
 
     {% block js1 %} {% endblock %}

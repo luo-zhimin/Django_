@@ -52,3 +52,39 @@ def org_detail(request, org_id):
         return render(request, 'orgs/org-detail-homepage.html', {
             'org': org
         })
+
+
+def org_detail_course(request, org_id):
+    if org_id:
+        org = OrgInfo.objects.filter(id=int(org_id))[0]
+
+        all_course = org.courseinfo_set.all()
+        page_num = request.GET.get('page_num', '')
+        pa = Paginator(all_course, 3)
+        try:
+            pages = pa.page(page_num)
+        except PageNotAnInteger:
+            pages = pa.page(1)
+        except EmptyPage:
+            pages = pa.page(pa.num_pages)
+
+        return render(request, 'orgs/org-detail-course.html', {
+            'org': org,
+            'pages': pages
+        })
+
+
+def org_detail_desc(request, org_id):
+    if org_id:
+        org = OrgInfo.objects.filter(id=int(org_id))[0]
+        return render(request, 'orgs/org-detail-desc.html', {
+            'org': org
+        })
+
+
+def org_detail_teachers(request, org_id):
+    if org_id:
+        org = OrgInfo.objects.filter(id=int(org_id))[0]
+        return render(request, 'orgs/org-detail-teachers.html', {
+            'org': org
+        })
