@@ -1,7 +1,7 @@
-from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
 from django.shortcuts import render
 
 from operations.models import UserLoveInfo
+from utils.page_tool import page
 from .models import OrgInfo, CityInfo
 
 
@@ -26,15 +26,7 @@ def org_list(request):
         # todo 重新赋值
         all_orgs = all_orgs.order_by(fr'-{sort}')
 
-    # 分页
-    pagenum = request.GET.get('pagenum', '')
-    pa = Paginator(all_orgs, 3)
-    try:
-        pages = pa.page(pagenum)
-    except PageNotAnInteger:
-        pages = pa.page(1)
-    except EmptyPage:
-        pages = pa.page(pa.num_pages)
+    pages = page(request,all_orgs)
 
     return render(request, 'orgs/org-list.html', {
         'all_orgs': all_orgs,
@@ -63,14 +55,8 @@ def org_detail_course(request, org_id):
         org = OrgInfo.objects.filter(id=int(org_id))[0]
 
         all_course = org.courseinfo_set.all()
-        page_num = request.GET.get('page_num', '')
-        pa = Paginator(all_course, 3)
-        try:
-            pages = pa.page(page_num)
-        except PageNotAnInteger:
-            pages = pa.page(1)
-        except EmptyPage:
-            pages = pa.page(pa.num_pages)
+
+        pages = page(request,all_course)
 
         love_status = get_love_status(request, org_id)
 
@@ -101,10 +87,16 @@ def org_detail_teachers(request, org_id):
         })
 
 
-def get_love_status(request, org_id):
+def get_love_status(request, love_id,love_type=1):
+    """
+    :param request: httpRequest
+    :param love_id: 收藏id
+    :param love_type: 收藏类型
+    :return: 是否收藏
+    """
     if request.user.is_authenticated:
         print('get_love_status~~~')
-        love_list = UserLoveInfo.objects.filter(love_man=request.user, love_id=org_id, love_type=1)
+        love_list = UserLoveInfo.objects.filter(love_man=request.user, love_id=love_id, love_type=love_type)
         if love_list:
             return love_list[0].love_status
         else:

@@ -14,8 +14,11 @@ Including another URLconf
     1. Import the include() function: from django.urls import include, path
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
-from django.urls import path, include
+from django.urls import path, re_path
+
+from .views import course_list, course_detail
 
 urlpatterns = [
-    # path(r'^courses/', include(('courses.urls', 'courses'), namespace='courses')),
+    path('course_list/', course_list, name='course_list'),
+    re_path('course_detail/(\\d+)',course_detail,name='course_detail')
 ]

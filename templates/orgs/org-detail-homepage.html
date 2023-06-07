@@ -19,7 +19,9 @@
 
             {% for course in org.courseinfo_set.all %}
                 <div class="module1_5 box">
-                    <a href="course-detail.html"><img width="214" src="{{ MEDIA_URL }}{{ course.image }}"/></a>
+                    <a href="course-detail.html">
+                        <img width="214" src="{{ MEDIA_URL }}{{ course.image }}" alt="{{ course.name }}"/>
+                    </a>
                     <div class="des">
                         <a href="course-detail.html">
                             <h2>{{ course.name }}</h2>
@@ -46,14 +48,14 @@
     <div class="right companycenter layout">
         <div class="head">
             <h1>机构教师</h1>
-            <a class="green fr more" href="org-detail-teachers.html">查看更多 > </a>
+            <a class="green fr more" href="{% url 'orgs:org_detail_teachers' org.id %}">查看更多 > </a>
         </div>
 
         {% for teacher in org.teacherinfo_set.all %}
             <div class="diarys">
                 <div class="module5 share company-diary-box" style="padding:10px 0;">
                     <div class="left">
-                        <img class="pic" src="{{ MEDIA_URL }}{{ teacher.image }}"/>
+                        <img class="pic" src="{{ MEDIA_URL }}{{ teacher.image }}" alt="{{ teacher.name }}"/>
                         <p>昵称：{{ teacher.name }}</p>
                     </div>
                     <div class="right">
@@ -75,7 +77,7 @@
     <div class="right companycenter layout">
         <div class="head">
             <h1>机构介绍</h1>
-            <a class="green fr more" href="org-detail-desc.html">查看更多 > </a>
+            <a class="green fr more" href="{% url 'orgs:org_detail_desc' org.id %}">查看更多 > </a>
         </div>
         <div class="cont">
             <p>{{ org.remark }}</p>
