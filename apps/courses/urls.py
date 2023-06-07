@@ -20,5 +20,5 @@ from .views import course_list, course_detail
 
 urlpatterns = [
     path('course_list/', course_list, name='course_list'),
-    re_path('course_detail/(\\d+)',course_detail,name='course_detail')
+    re_path('course_detail/(\\d+)', course_detail, name='course_detail')
 ]

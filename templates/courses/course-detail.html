@@ -31,10 +31,11 @@
                         </div>
 
                         <div class="des">
-                            <h1 title="mysql基础">{{ course.name }}</h1>
+                            <h1 title="{{ course.name }}">{{ course.name }}</h1>
                             <span class="key">{{ course.desc }}</span>
                             <div class="prize">
-                                <span class="fl">难度：
+                                <span class="fl">
+                                    难度：
                                     <i class="key">
                                     {% if course.level == 'cj' %} 初级
                                     {% elif course.level == 'zj' %} 中级
@@ -61,9 +62,13 @@
                                         {% endif %}
                                     </span>
                                 </li>
-                                <li class="piclist"><span class="pram word4">学习用户：</span>
 
-                                    <span class="pic"><img width="40" height="40" src="../images/touxiang.jpg"/></span>
+                                <li class="piclist">
+                                    <span class="pram word4">学习用户：</span>
+
+                                    <span class="pic">
+                                        <img width="40" height="40" src="{{ MEDIA_URL }}"/>
+                                    </span>
 
                                 </li>
                             </ul>
@@ -88,7 +93,7 @@
                             </a>
                         </div>
                         <a href="{% url 'orgs:org_detail' course.org_info.id %}">
-                            <h2 class="center" title="尚硅谷">{{ course.org_info.name }}</h2>
+                            <h2 class="center" title="{{ course.org_info.name }}">{{ course.org_info.name }}</h2>
                         </a>
                         <div class="btn  notlogin
 					     " data-favid="14" id="jsRightBtn">
@@ -98,15 +103,15 @@
                         <div class="clear">
                             <ul>
                                 <li>
-                                    <span>课 &nbsp;程&nbsp; 数：&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; {{ course.org_info.courseinfo_set.count }}</span>
+                                    <span>课 &nbsp;程&nbsp; 数：&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; {{ course.org_info.course_num }}</span>
                                 </li>
                                 <li>
                                     <span>教 &nbsp;师&nbsp; 数：&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; {{ course.org_info.teacherinfo_set.count }}</span>
                                 </li>
-                                <li>所在地区：&nbsp;&nbsp;{{ course.org_info.address }}</li>
+                                <li>所在地区：&nbsp;&nbsp;{{ course.org_info.city_info.name }}</li>
                                 <li>认&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;证&nbsp;:
                                     &nbsp;&nbsp;
-                                    <img title="金牌机构" src="{% static 'images/gold.png' %}"/>
+                                    <img title="金牌机构" src="{% static 'images/gold.png' %}" alt="金牌"/>
                                 </li>
                             </ul>
                         </div>
@@ -138,22 +143,27 @@
                         </div>
                     </div>
                 </div>
+
                 <div class="right layout">
                     <div class="head">相关课程推荐</div>
                     <div class="group_recommend">
 
-                        <dl>
-                            <dt>
-                                <a target="_blank" href="">
-                                    <img width="240" height="220" class="scrollLoading" src="../images/mysql.jpg"/>
-                                </a>
-                            </dt>
-                            <dd>
-                                <a target="_blank" href=""><h2> mysql高级</h2></a>
-                                <span class="fl">学习时长：<i class="key">0</i></span>
-                            </dd>
-                        </dl>
-
+                        {% for relate in relate_courses %}
+                            <dl>
+                                <dt>
+                                    <a target="_blank" href="{% url 'courses:course_detail' relate.id %}">
+                                        <img width="240" height="220" class="scrollLoading"
+                                             src="{{ MEDIA_URL }}{{ relate.image }}" alt="{{ relate.name }}"/>
+                                    </a>
+                                </dt>
+                                <dd>
+                                    <a target="_blank" href="{% url 'courses:course_detail' relate.id %}">
+                                        <h2> {{ relate.name }}</h2>
+                                    </a>
+                                    <span class="fl">学习时长：<i class="key">{{ relate.study_time }}</i></span>
+                                </dd>
+                            </dl>
+                        {% endfor %}
 
                     </div>
                 </div>
@@ -162,4 +172,46 @@
     </section>
 {% endblock %}
 
+{% block js %}
+    <script>
+        {#收藏机构#}
+        $('#jsLeftBtn').click(function () {
+            $.ajax({
+                type: 'GET',
+                url: '{% url "operations:user_love" %}',
+                data: {
+                    love_id:{{ course.id }},
+                    {# 1 org 2 course 3 teacher #}
+                    love_type: 2
+                },
+                success: function (callback) {
+                    if (callback.status === 200) {
+                        $('#jsLeftBtn').text(callback.msg)
+                    } else {
+                        alert(callback.msg)
+                    }
+                }
+            })
+        })
 
+        $('#jsRightBtn').click(function () {
+            $.ajax({
+                type: 'GET',
+                url: '{% url "operations:user_love" %}',
+                data: {
+                    love_id:{{ course.org_info.id }},
+                    {# 1 org 2 course 3 teacher #}
+                    love_type: 1
+                },
+                success: function (callback) {
+                    if (callback.status === 200) {
+                        $('#jsRightBtn').text(callback.msg)
+                    } else {
+                        alert(callback.msg)
+                    }
+                }
+            })
+        })
+
+    </script>
+{% endblock %}

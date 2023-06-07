@@ -1,6 +1,6 @@
 from django.shortcuts import render
 
-from orgs.views import get_love_status
+from utils.common_tool import get_love_status
 from utils.page_tool import page
 from .models import CourseInfo
 
@@ -31,8 +31,14 @@ def course_detail(request, course_id):
         course = CourseInfo.objects.filter(id=int(course_id))[0]
         course_love_status = get_love_status(request, course_id, 2)
         org_love_status = get_love_status(request, course.org_info.id, 1)
+
+        # 相关课程
+        relate_courses = CourseInfo.objects.filter(category=course.category) \
+            .exclude(id=int(course_id))[:2]
+
         return render(request, 'courses/course-detail.html', {
             'course': course,
             'course_love_status': course_love_status,
-            'org_love_status': org_love_status
+            'org_love_status': org_love_status,
+            'relate_courses': relate_courses
         })

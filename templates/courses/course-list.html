@@ -49,6 +49,7 @@
                                             <span class="fr">学习人数：{{ course.study_num }}&nbsp;&nbsp;</span>
                                         </div>
                                         <div class="bottom">
+                                                {#  机构或者课程  #}
                                             <a href="{% url 'courses:course_detail' course.id %}">
                                                 <span class="fl">
                                                     来自{{ course.org_info.name }}

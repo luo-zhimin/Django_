@@ -12,18 +12,18 @@
     <div class="right companycenter layout grouping">
         <div class="head">
             <h1>全部课程</h1>
-            <a class="green fr more" href="org-detail-course.html">查看更多 > </a>
+            <a class="green fr more" href="{% url 'courses:course_list' %}">查看更多 > </a>
         </div>
 
         <div class="brief group_list">
 
             {% for course in org.courseinfo_set.all %}
                 <div class="module1_5 box">
-                    <a href="course-detail.html">
+                    <a href="{% url 'courses:course_detail' course.id %}">
                         <img width="214" src="{{ MEDIA_URL }}{{ course.image }}" alt="{{ course.name }}"/>
                     </a>
                     <div class="des">
-                        <a href="course-detail.html">
+                        <a href="{% url 'courses:course_detail' course.id %}">
                             <h2>{{ course.name }}</h2>
                         </a>
                         <span class="fl">课时：
