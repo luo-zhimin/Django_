@@ -34,11 +34,22 @@ def course_detail(request, course_id):
 
         # 相关课程
         relate_courses = CourseInfo.objects.filter(category=course.category) \
-            .exclude(id=int(course_id))[:2]
+                             .exclude(id=int(course_id))[:2]
 
         return render(request, 'courses/course-detail.html', {
             'course': course,
             'course_love_status': course_love_status,
             'org_love_status': org_love_status,
             'relate_courses': relate_courses
+        })
+
+
+def course_video(request, course_id):
+    if course_id:
+        course = CourseInfo.objects.filter(id=int(course_id))[0]
+        same_courses = CourseInfo.objects.filter(category=course.category).exclude(id=int(course_id))[:2]
+
+        return render(request, 'courses/course-video.html', {
+            'course': course,
+            'same_courses': same_courses
         })
