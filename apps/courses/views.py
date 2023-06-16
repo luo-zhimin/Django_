@@ -1,5 +1,6 @@
 from django.shortcuts import render
 
+from operations.models import UserCourseInfo
 from utils.common_tool import get_love_status
 from utils.page_tool import page
 from .models import CourseInfo
@@ -47,9 +48,25 @@ def course_detail(request, course_id):
 def course_video(request, course_id):
     if course_id:
         course = CourseInfo.objects.filter(id=int(course_id))[0]
-        same_courses = CourseInfo.objects.filter(category=course.category).exclude(id=int(course_id))[:2]
+        # 开始学习
+        user_course_list = UserCourseInfo.objects.filter(study_man=request.user, study_course=course)
+        if not user_course_list:
+            user_course = UserCourseInfo()
+            user_course.study_man = request.user
+            user_course.study_course = course
+            user_course.save()
+
+        # 学过改课的同学还学过什么课程
+        # same_courses = CourseInfo.objects.filter(category=course.category).exclude(id=int(course_id))[:2]
+        user_course_list = UserCourseInfo.objects.filter(study_course=course)
+        # 找到素有的用户的列表 列表生成式
+        user_list = [u.study_man for u in user_course_list]
+        user_course_list = UserCourseInfo.objects.filter(study_man__in=user_list) \
+            .exclude(id=int(course_id))
+        # 取课程去重
+        course_list = list(set([c.study_course for c in user_course_list]))[:2]
 
         return render(request, 'courses/course-video.html', {
             'course': course,
-            'same_courses': same_courses
+            'course_list': course_list
         })

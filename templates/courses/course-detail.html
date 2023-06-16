@@ -66,9 +66,12 @@
                                 <li class="piclist">
                                     <span class="pram word4">学习用户：</span>
 
-                                    <span class="pic">
-                                        <img width="40" height="40" src="{{ MEDIA_URL }}"/>
+                                    {% for user_course in course.usercourseinfo_set.all|slice:":6" %}
+                                        <span class="pic">
+                                        <img width="40" height="40"
+                                             src="{{ MEDIA_URL }}{{ user_course.study_man.image }}"/>
                                     </span>
+                                    {% endfor %}
 
                                 </li>
                             </ul>
@@ -76,7 +79,9 @@
                                 <div class="btn colectgroupbtn" id="jsLeftBtn">
                                     {% if course_love_status %} 取消收藏 {% else %} 收藏 {% endif %}
                                 </div>
-                                <div class="buy btn"><a style="color: white" href="{% url 'courses:course_video' course.id %}">开始学习</a></div>
+                                <div class="buy btn"><a style="color: white"
+                                                        href="{% url 'courses:course_video' course.id %}">开始学习</a>
+                                </div>
                             </div>
                         </div>
                     </div>

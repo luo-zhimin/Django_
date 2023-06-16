@@ -77,7 +77,7 @@
                         <div class="mod-tab-menu">
                             <ul class="course-menu clearfix">
                                 <li><a class="ui-tabs-active active" id="learnOn"
-                                       href="course-video.html"><span>章节</span></a>
+                                       href="{% url 'courses:course_video' course.id %}"><span>章节</span></a>
                                 </li>
                                 <li><a id="commentOn" class="" href="course-comment.html"><span>评论</span></a></li>
                             </ul>
@@ -121,7 +121,7 @@
                                         <li>
                                             <span><i
                                                     class="aui-iconfont aui-icon-file"></i>&nbsp;&nbsp;{{ source.name }}</span>
-                                            <a href="{{ source.down_load }}" class="downcode"
+                                            <a href="{{ MEDIA_URL }}{{ source.down_load }}" class="downcode"
                                                target="_blank" download="" data-id="274" title="">下载</a>
                                         </li>
                                     {% endfor %}
@@ -165,11 +165,11 @@
                                          style="display: block">
                                         <!-- img 200 x 112 -->
                                         <ul class="other-list">
-                                            {% for same_course in same_courses %}
+                                            {% for cou in course_list %}
                                                 <li class="curr">
-                                                    <a href="{% url 'courses:course_detail' same_course.id %}" target="_blank">
-                                                        <img src="{{MEDIA_URL}}{{ same_course.image }}" alt="{{ same_course.name }}">
-                                                        <span class="name autowrap">{{ same_course.name }}</span>
+                                                    <a href="{% url 'courses:course_detail' cou.id %}" target="_blank">
+                                                        <img src="{{MEDIA_URL}}{{ cou.image }}" alt="{{ cou.name }}">
+                                                        <span class="name autowrap">{{ cou.name }}</span>
                                                     </a>
                                                 </li>
                                             {% endfor %}
