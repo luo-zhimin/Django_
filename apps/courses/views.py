@@ -1,5 +1,6 @@
 from django.shortcuts import render
 
+from operations.models import UserCommentInfo
 from operations.models import UserCourseInfo
 from utils.common_tool import get_love_status
 from utils.page_tool import page
@@ -56,17 +57,29 @@ def course_video(request, course_id):
             user_course.study_course = course
             user_course.save()
 
-        # 学过改课的同学还学过什么课程
-        # same_courses = CourseInfo.objects.filter(category=course.category).exclude(id=int(course_id))[:2]
-        user_course_list = UserCourseInfo.objects.filter(study_course=course)
-        # 找到素有的用户的列表 列表生成式
-        user_list = [u.study_man for u in user_course_list]
-        user_course_list = UserCourseInfo.objects.filter(study_man__in=user_list) \
-            .exclude(id=int(course_id))
-        # 取课程去重
-        course_list = list(set([c.study_course for c in user_course_list]))[:2]
-
         return render(request, 'courses/course-video.html', {
             'course': course,
-            'course_list': course_list
+            'course_list': get_study_course_list(course)
         })
+
+
+def course_comment(request, course_id):
+    if course_id:
+        course = CourseInfo.objects.filter(id=int(course_id))[0]
+        user_comment_course_list = UserCommentInfo.objects.filter(comment_course_id=course.id)[:10]
+        return render(request, 'courses/course-comment.html', {
+            'course': course,
+            'course_list': get_study_course_list(course),
+            'user_comment_course_list': user_comment_course_list
+        })
+
+
+def get_study_course_list(course):
+    # 学过改课的同学还学过什么课程
+    user_course_list = UserCourseInfo.objects.filter(study_course=course)
+    # 找到素有的用户的列表 列表生成式
+    user_list = [u.study_man for u in user_course_list]
+    user_course_list = UserCourseInfo.objects.filter(study_man__in=user_list) \
+        .exclude(id=int(course.id))
+    # 取课程去重
+    return list(set([c.study_course for c in user_course_list]))[:2]

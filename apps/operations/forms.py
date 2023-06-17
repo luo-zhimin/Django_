@@ -25,3 +25,13 @@ class UserAskForm(forms.ModelForm):
 
     # def clean_course(self):
     # 可以校验是否有该课程
+
+
+# class UserCommentForm(forms.ModelForm):
+#     class Meta:
+#         model = UserCommentInfo
+#         fields = ['comment_man', 'comment_course', 'comment_content']
+
+class UserCommentForm(forms.Form):
+    comment_course = forms.IntegerField(required=True)
+    comment_content = forms.CharField(required=True, min_length=1, max_length=100)

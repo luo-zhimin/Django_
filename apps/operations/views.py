@@ -1,7 +1,7 @@
 from django.http import JsonResponse
 
-from .forms import UserAskForm
-from .models import UserLoveInfo
+from .forms import UserAskForm, UserCommentForm
+from .models import UserLoveInfo, UserCommentInfo
 
 
 # Create your views here.
@@ -46,3 +46,16 @@ def user_love(request):
             return JsonResponse({'status': 200, 'msg': '取消收藏'})
     else:
         return JsonResponse({'status': 500, 'msg': '参数异常'})
+
+
+def user_comment(request):
+    user_comment_form = UserCommentForm(request.POST)
+    if user_comment_form.is_valid():
+        user_comment_info = UserCommentInfo()
+        user_comment_info.comment_course_id = user_comment_form.cleaned_data['comment_course']
+        user_comment_info.comment_content = user_comment_form.cleaned_data['comment_content']
+        user_comment_info.comment_man = request.user
+        user_comment_info.save()
+        return JsonResponse({'status': 200, 'msg': '评论成功'})
+    else:
+        return JsonResponse({'status': 500, 'msg': '评论失败'})

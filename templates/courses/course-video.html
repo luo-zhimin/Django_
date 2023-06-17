@@ -69,6 +69,7 @@
                 </div>
             </div>
         </div>
+
         <div class="course-info-main clearfix w has-progress">
 
             <div class="info-bar clearfix">
@@ -79,7 +80,7 @@
                                 <li><a class="ui-tabs-active active" id="learnOn"
                                        href="{% url 'courses:course_video' course.id %}"><span>章节</span></a>
                                 </li>
-                                <li><a id="commentOn" class="" href="course-comment.html"><span>评论</span></a></li>
+                                <li><a id="commentOn" class="" href="{% url 'courses:course_comment' course.id %}"><span>评论</span></a></li>
                             </ul>
                         </div>
                         <div id="notice" class="clearfix">
@@ -108,8 +109,8 @@
                             {% endfor %}
 
                         </div>
-
                     </div>
+
                     <div class="aside r">
                         <div class="bd">
 
@@ -181,6 +182,7 @@
 
                         </div>
                     </div>
+
                 </div>
 
                 <div class="clear"></div>
