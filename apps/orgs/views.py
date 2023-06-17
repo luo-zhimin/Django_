@@ -2,7 +2,7 @@ from django.shortcuts import render
 
 from utils.common_tool import get_love_status
 from utils.page_tool import page
-from .models import OrgInfo, CityInfo
+from .models import OrgInfo, CityInfo, TeacherInfo
 
 
 # Create your views here.
@@ -26,7 +26,7 @@ def org_list(request):
         # todo 重新赋值
         all_orgs = all_orgs.order_by(fr'-{sort}')
 
-    pages = page(request,all_orgs)
+    pages = page(request, all_orgs)
 
     return render(request, 'orgs/org-list.html', {
         'all_orgs': all_orgs,
@@ -56,7 +56,7 @@ def org_detail_course(request, org_id):
 
         all_course = org.courseinfo_set.all()
 
-        pages = page(request,all_course)
+        pages = page(request, all_course)
 
         love_status = get_love_status(request, org_id)
 
@@ -87,4 +87,29 @@ def org_detail_teachers(request, org_id):
         })
 
 
+def teacher_list(request):
+    teachers = TeacherInfo.objects.all()
+    sort_teachers = teachers.order_by('-love_num')[:3]
 
+    # 排序
+    sort = request.GET.get('sort', '')
+    if sort:
+        # print(fr'-{sort}')
+        # todo 重新赋值
+        teachers = teachers.order_by(fr'-{sort}')
+
+    pages = page(request, teachers)
+    return render(request, 'orgs/teachers-list.html', {
+        'teachers': teachers,
+        'sort_teachers': sort_teachers,
+        'pages': pages,
+        'sort': sort
+    })
+
+
+def teacher_detail(request, teacher_id):
+    if teacher_id:
+        teacher = TeacherInfo.objects.filter(id=int(teacher_id))[0]
+        return render(request, 'orgs/teacher-detail.html', {
+            'teacher': teacher
+        })

@@ -49,7 +49,7 @@
                                             <span class="fr">学习人数：{{ course.study_num }}&nbsp;&nbsp;</span>
                                         </div>
                                         <div class="bottom">
-                                                {#  机构或者课程  #}
+                                            {#  机构或者课程  #}
                                             <a href="{% url 'courses:course_detail' course.id %}">
                                                 <span class="fl">
                                                     来自{{ course.org_info.name }}
@@ -66,37 +66,37 @@
                             </div>
 
                             <div class="pageturn">
-                        <ul class="pagelist">
-                            {% if pages.has_previous %}
-                                <li class="long">
-                                    <a href="?pagenum={{ pages.previous_page_number }}&sort={{ sort }}">
-                                        上一页
-                                    </a>
-                                </li>
-                            {% endif %}
+                                <ul class="pagelist">
+                                    {% if pages.has_previous %}
+                                        <li class="long">
+                                            <a href="?pagenum={{ pages.previous_page_number }}&sort={{ sort }}">
+                                                上一页
+                                            </a>
+                                        </li>
+                                    {% endif %}
 
-                            {# paginator.page_range 页码 #}
-                            {% for num in pages.paginator.page_range %}
-                                <li
-                                        {% if num == pages.number %}
-                                            class="active"
-                                        {% endif %}
-                                >
-                                    <a href="?pagenum={{ num }}&sort={{ sort }}">
-                                        {{ num }}
-                                    </a>
-                                </li>
-                            {% endfor %}
+                                    {# paginator.page_range 页码 #}
+                                    {% for num in pages.paginator.page_range %}
+                                        <li
+                                                {% if num == pages.number %}
+                                                    class="active"
+                                                {% endif %}
+                                        >
+                                            <a href="?pagenum={{ num }}&sort={{ sort }}">
+                                                {{ num }}
+                                            </a>
+                                        </li>
+                                    {% endfor %}
 
-                            {% if pages.has_next %}
-                                <li class="long">
-                                    <a href="?pagenum={{ pages.next_page_number }}&sort={{ sort }}">
-                                        下一页
-                                    </a>
-                                </li>
-                            {% endif %}
-                        </ul>
-                    </div>
+                                    {% if pages.has_next %}
+                                        <li class="long">
+                                            <a href="?pagenum={{ pages.next_page_number }}&sort={{ sort }}">
+                                                下一页
+                                            </a>
+                                        </li>
+                                    {% endif %}
+                                </ul>
+                            </div>
 
                         </div>
                     </div>
@@ -120,7 +120,7 @@
                                         难度：
                                         <i class="key">
                                             {% if recommend_course.level == 'cj' %} 初级
-                                            {% elif recommend_course.level == 'zj'%} 中级
+                                            {% elif recommend_course.level == 'zj' %} 中级
                                             {% else %} 高级
                                             {% endif %}
                                         </i>

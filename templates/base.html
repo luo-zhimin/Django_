@@ -98,9 +98,8 @@
                                         公开课<img class="hot" src="{% static 'images/nav_hot.png' %}" alt="hot">
                                     </a>
                                 </li>
-                                <li>
-                                    {# <a href="{% url 'org:teacher_list' %}">#}
-                                    <a href="">
+                                <li {% if request.path == '/orgs/teacher_list/' or request.resolver_match.url_name == 'teacher_detail' %} class="active" {% endif %}>
+                                    <a href="{% url 'orgs:teacher_list' %}">
                                         授课教师
                                     </a>
                                 </li>
