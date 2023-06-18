@@ -80,7 +80,8 @@
                                 <li><a class="ui-tabs-active active" id="learnOn"
                                        href="{% url 'courses:course_video' course.id %}"><span>章节</span></a>
                                 </li>
-                                <li><a id="commentOn" class="" href="{% url 'courses:course_comment' course.id %}"><span>评论</span></a></li>
+                                <li><a id="commentOn" class=""
+                                       href="{% url 'courses:course_comment' course.id %}"><span>评论</span></a></li>
                             </ul>
                         </div>
                         <div id="notice" class="clearfix">
@@ -98,7 +99,9 @@
                                     <ul class="video">
                                         {% for video in chapter.videoinfo_set.all %}
                                             <li>
-                                                <a target="_blank" href='/video/3662' class="J-media-item studyvideo">
+{#                                                <a target="_blank" href='/video/3662' class="J-media-item studyvideo">#}
+                                                 {#  视频  #}
+                                                <a target="_blank" href='{{ video.url }}' class="J-media-item studyvideo">
                                                     {{ video.name }}
                                                     <i class="study-state"></i>
                                                 </a>
@@ -131,12 +134,13 @@
                             <div class="box mb40">
                                 <h4>讲师提示</h4>
                                 <div class="teacher-info">
-                                    <a href="/u/315464/courses?sort=publish" target="_blank">
+                                    <a href="{% url 'orgs:teacher_detail' course.teacher_info.id %}" target="_blank">
                                         <img src='{{ MEDIA_URL }}{{ course.teacher_info.image }}' width='80'
                                              height='80' alt="{{ course.teacher_info.name }}"/>
                                     </a>
                                     <span class="tit">
-                                        <a href="/u/315464/courses?sort=publish" target="_blank">
+                                        <a href="{% url 'orgs:teacher_detail' course.teacher_info.id %}"
+                                           target="_blank">
                                             {{ course.teacher_info.name }}
                                         </a>
                                     </span>
@@ -169,7 +173,7 @@
                                             {% for cou in course_list %}
                                                 <li class="curr">
                                                     <a href="{% url 'courses:course_detail' cou.id %}" target="_blank">
-                                                        <img src="{{MEDIA_URL}}{{ cou.image }}" alt="{{ cou.name }}">
+                                                        <img src="{{ MEDIA_URL }}{{ cou.image }}" alt="{{ cou.name }}">
                                                         <span class="name autowrap">{{ cou.name }}</span>
                                                     </a>
                                                 </li>

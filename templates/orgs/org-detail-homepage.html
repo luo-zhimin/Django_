@@ -61,11 +61,14 @@
                     <div class="right">
                         <div class="top">
                             <div class="fl">
-                                <a href="">
-                                    <h1>{{ teacher.courseinfo_set.all.0 }}</h1>
-                                </a>
-                                <span>发表于：{{ teacher.courseinfo_set.all.0.add_time }}</span>
-                            </div>
+                                {#  问题：teacher.courseinfo_set.all.0.id 会咩有值 但不是空 #}
+                                {% if teacher.courseinfo_set.all %}
+                                    <a href="{% url 'courses:course_detail' teacher.courseinfo_set.all.0.id %}">
+                                        <h1>{{ teacher.courseinfo_set.all.0 }}</h1>
+                                    </a>
+                                    <span>发表于：{{ teacher.courseinfo_set.all.0.add_time }}</span>
+                                    </div>
+                                {% endif %}
                         </div>
                         <div class="middle" style="border-bottom:0;">{{ teacher.courseinfo_set.all.0.desc }}</div>
                     </div>

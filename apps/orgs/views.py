@@ -95,7 +95,6 @@ def teacher_list(request):
     sort = request.GET.get('sort', '')
     if sort:
         # print(fr'-{sort}')
-        # todo 重新赋值
         teachers = teachers.order_by(fr'-{sort}')
 
     pages = page(request, teachers)
@@ -110,6 +109,13 @@ def teacher_list(request):
 def teacher_detail(request, teacher_id):
     if teacher_id:
         teacher = TeacherInfo.objects.filter(id=int(teacher_id))[0]
+        teachers = TeacherInfo.objects.all()
+        sort_teachers = teachers.order_by('-love_num')[:3]
+        love_status = get_love_status(request, teacher.work_company.id)
+        love_teacher_status = get_love_status(request, teacher.id)
         return render(request, 'orgs/teacher-detail.html', {
-            'teacher': teacher
+            'teacher': teacher,
+            'sort_teachers': sort_teachers,
+            'love_status': love_status,
+            'love_teacher_status': love_teacher_status,
         })

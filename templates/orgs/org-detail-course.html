@@ -19,12 +19,12 @@
 
             {% for course in pages %}
                 <div class="module1_5 box">
-                    <a class="comp-img-box" href="course-detail.html">
+                    <a class="comp-img-box" href="{% url 'courses:course_detail' course.id %}">
 
-                        <img width="214" height="195" src="{{ MEDIA_URL }}{{ course.image }}"/>
+                        <img width="214" height="195" src="{{ MEDIA_URL }}{{ course.image }}" alt="{{ course.name }}"/>
                     </a>
                     <div class="des">
-                        <a href="course-detail.html">
+                        <a href="{% url 'courses:course_detail' course.id %}">
                             <h2>{{ course.name }}</h2>
                         </a>
                         <span class="fl">课时：

@@ -143,12 +143,12 @@
                             <div class="box mb40">
                                 <h4>讲师提示</h4>
                                 <div class="teacher-info">
-                                    <a href="/u/315464/courses?sort=publish" target="_blank">
+                                    <a href="{% url 'orgs:teacher_detail' course.teacher_info.id %}" target="_blank">
                                         <img src='{{ MEDIA_URL }}{{ course.teacher_info.image }}' width='80'
                                              height='80' alt="{{ course.teacher_info.name }}"/>
                                     </a>
                                     <span class="tit">
-                                        <a href="/u/315464/courses?sort=publish" target="_blank">
+                                        <a href="{% url 'orgs:teacher_detail' course.teacher_info.id %}" target="_blank">
                                             {{ course.teacher_info.name }}
                                         </a>
                                     </span>
