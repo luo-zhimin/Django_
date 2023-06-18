@@ -42,6 +42,10 @@ def org_list(request):
 def org_detail(request, org_id):
     if org_id:
         org = OrgInfo.objects.filter(id=int(org_id))[0]
+        # clink_num +1 访问量
+        org.click_num += 1
+        org.save()
+
         love_status = get_love_status(request, org_id)
 
         return render(request, 'orgs/org-detail-homepage.html', {
@@ -109,6 +113,9 @@ def teacher_list(request):
 def teacher_detail(request, teacher_id):
     if teacher_id:
         teacher = TeacherInfo.objects.filter(id=int(teacher_id))[0]
+        teacher.click_num += 1
+        teacher.save()
+
         teachers = TeacherInfo.objects.all()
         sort_teachers = teachers.order_by('-love_num')[:3]
         love_status = get_love_status(request, teacher.work_company.id)

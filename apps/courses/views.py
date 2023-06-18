@@ -32,6 +32,9 @@ def course_detail(request, course_id):
     print(fr"course_detail:{course_id}")
     if course_id:
         course = CourseInfo.objects.filter(id=int(course_id))[0]
+        course.click_num += 1
+        course.save()
+
         course_love_status = get_love_status(request, course_id, 2)
         org_love_status = get_love_status(request, course.org_info.id, 1)
 
