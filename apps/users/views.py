@@ -182,3 +182,7 @@ def user_reset(request, code):
         return render(request, 'users/login.html', {
             'msg': '验证码不存在，请重新获取'
         })
+
+
+def user_info(request):
+    return render(request, 'users/usercenter-info.html')

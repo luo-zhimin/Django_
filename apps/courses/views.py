@@ -60,6 +60,11 @@ def course_video(request, course_id):
             user_course.study_man = request.user
             user_course.study_course = course
             user_course.save()
+            # 第一次学习 时候加+1 课程
+            course.study_num += 1
+            course.save()
+            course.org_info.study_num += 1
+            course.org_info.save()
 
         return render(request, 'courses/course-video.html', {
             'course': course,

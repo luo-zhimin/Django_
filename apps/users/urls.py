@@ -16,7 +16,7 @@ Including another URLconf
 """
 from django.urls import path, re_path
 
-from .views import user_register, user_login, user_logout, user_active, user_forget, user_reset
+from .views import user_register, user_login, user_logout, user_active, user_forget, user_reset, user_info
 
 urlpatterns = [
     # name 必须是 'xxx'
@@ -28,4 +28,6 @@ urlpatterns = [
 
     path('user_forget/', user_forget, name='user_forget'),
     re_path('user_reset/(\\w+)/', user_reset, name='user_reset'),
+
+    path('user_info/', user_info, name='user_info'),
 ]
