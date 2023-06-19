@@ -1,9 +1,10 @@
 from django.contrib.auth import authenticate, login, logout
 from django.db.models import Q
+from django.http import JsonResponse
 from django.shortcuts import render, redirect, reverse, HttpResponse
 
 from utils.send_mail_tool import send_email_code
-from .forms import UserRegisterForm, UserLoginForm, UserForgetForm, UserResetForm
+from .forms import UserRegisterForm, UserLoginForm, UserForgetForm, UserResetForm, UserChangeImageForm
 from .models import UserProfile, EmailVerifyCode
 
 
@@ -186,3 +187,15 @@ def user_reset(request, code):
 
 def user_info(request):
     return render(request, 'users/usercenter-info.html')
+
+
+def user_change_image(request):
+    # instance 指明实列是什么 修改时候 不指明的话会被当作创建对象去执行
+    user_change_image_from = UserChangeImageForm(request.POST,
+                                                 request.FILES,
+                                                 instance=request.user)
+    if user_change_image_from.is_valid():
+        user_change_image_from.save(commit=True)
+        return JsonResponse({'statsu': 'ok'})
+    else:
+        return JsonResponse({'statsu': 'fail'})
