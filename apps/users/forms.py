@@ -51,3 +51,9 @@ class UserChangeImageForm(forms.ModelForm):
     class Meta:
         model = UserProfile
         fields = ['image']
+
+
+class UserChangeInfoForm(forms.ModelForm):
+    class Meta:
+        model = UserProfile
+        fields = ['nick_name', 'gender', 'birthday', 'address', 'phone']

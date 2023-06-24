@@ -4,7 +4,8 @@ from django.http import JsonResponse
 from django.shortcuts import render, redirect, reverse, HttpResponse
 
 from utils.send_mail_tool import send_email_code
-from .forms import UserRegisterForm, UserLoginForm, UserForgetForm, UserResetForm, UserChangeImageForm
+from .forms import UserRegisterForm, UserLoginForm, UserForgetForm, UserResetForm, UserChangeImageForm, \
+    UserChangeInfoForm
 from .models import UserProfile, EmailVerifyCode
 
 
@@ -191,11 +192,20 @@ def user_info(request):
 
 def user_change_image(request):
     # instance 指明实列是什么 修改时候 不指明的话会被当作创建对象去执行
-    user_change_image_from = UserChangeImageForm(request.POST,
+    user_change_image_form = UserChangeImageForm(request.POST,
                                                  request.FILES,
                                                  instance=request.user)
-    if user_change_image_from.is_valid():
-        user_change_image_from.save(commit=True)
+    if user_change_image_form.is_valid():
+        user_change_image_form.save(commit=True)
         return JsonResponse({'statsu': 'ok'})
     else:
         return JsonResponse({'statsu': 'fail'})
+
+
+def user_change_info(request):
+    user_change_info_form = UserChangeInfoForm(request.POST, instance=request.user)
+    if user_change_info_form.is_valid():
+        user_change_info_form.save(commit=True)
+        return JsonResponse({'statsu': '200', 'msg': '修改成功'})
+    else:
+        return JsonResponse({'statsu': '500', 'msg': '修改失败'})

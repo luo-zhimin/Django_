@@ -17,7 +17,7 @@
                 <div class="left" style="width:242px;">
                     <iframe id='frameFile' name='frameFile' style='display: none;'></iframe>
                     <form class="clearfix" id="jsAvatarForm" enctype="multipart/form-data" autocomplete="off"
-{#                          method="post" action="/users/image/upload/" target='frameFile'>#}
+                            {#                          method="post" action="/users/image/upload/" target='frameFile'>#}
                           method="post" action="{% url 'users:user_change_image' %}" target='frameFile'>
                         {% csrf_token %}
                         <label class="changearea" for="avatarUp">
@@ -32,40 +32,46 @@
                         </label>
                     </form>
                     {#   和忘记密码一样 #}
-{#                    <div style="border-top:1px solid #eaeaea;margin-top:30px;">#}
-{#                        <a class="button btn-green btn-w100" id="jsUserResetPwd" style="margin:80px auto;width:100px;">修改密码</a>#}
-{#                    </div>#}
+                    {#                    <div style="border-top:1px solid #eaeaea;margin-top:30px;">#}
+                    {#                        <a class="button btn-green btn-w100" id="jsUserResetPwd" style="margin:80px auto;width:100px;">修改密码</a>#}
+                    {#                    </div>#}
                 </div>
                 <form class="perinform" id="jsEditUserForm" autocomplete="off">
                     <ul class="right">
                         <li>昵&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;称：
                             <input type="text" name="nick_name" id="nick_name"
-                                   value="{{ reqest.user.nick_name|default_if_none:"" }}" maxlength="10">
+                                   value="{{ request.user.nick_name|default_if_none:"" }}" maxlength="10">
                             <i class="error-tips"></i>
                         </li>
                         <li>生&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;日：
-                            <input type="text" id="birth_day" name="birday" value="{{ request.user.birthday|default_if_none:"" }}" readonly="readonly"/>
+                            <input type="text" id="birth_day" name="birday"
+                                   value="{{ request.user.birthday|default_if_none:"" }}" readonly="readonly"/>
                             <i class="error-tips"></i>
                         </li>
                         <li>性&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;别：
                             <label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                                <input type="radio" name="gender" value="boy" {% if request.user.gender == 'boy' %} checked="checked" {% endif %}>男
+                                <input type="radio" name="gender" value="boy" {% if request.user.gender == 'boy' %}
+                                       checked="checked" {% endif %}>男
                             </label>
                             <label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                                <input type="radio" name="gender" value="girl" {% if request.user.gender == 'girl' %} checked="checked" {% endif %} >女
+                                <input type="radio" name="gender" value="girl" {% if request.user.gender == 'girl' %}
+                                       checked="checked" {% endif %} >女
                             </label>
                         </li>
                         <li class="p_infor_city">地&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;址：
-                            <input type="text" name="address" id="address" placeholder="请输入你的地址" value="{{ request.user.address|default_if_none:"" }}"
+                            <input type="text" name="address" id="address" placeholder="请输入你的地址"
+                                   value="{{ request.user.address|default_if_none:"" }}"
                                    maxlength="10">
                             <i class="error-tips"></i>
                         </li>
                         <li>手&nbsp;&nbsp;机&nbsp;&nbsp;号：
-                            <input type="text" name="mobile" id="mobile" placeholder="请输入你的手机号码" value="{{ request.user.phone|default_if_none:"" }}"
+                            <input type="text" name="mobile" id="mobile" placeholder="请输入你的手机号码"
+                                   value="{{ request.user.phone|default_if_none:"" }}"
                                    maxlength="11">
                         </li>
                         <li>邮&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;箱：
-                            <input class="borderno" type="text" name="email" readonly="readonly" value="{{ request.user.email }}"/>
+                            <input class="borderno" type="text" name="email" readonly="readonly"
+                                   value="{{ request.user.email }}"/>
                             <span class="green changeemai_btn">[修改]</span>
                         </li>
                         <li class="button heibtn">
@@ -77,5 +83,43 @@
             </div>
         </div>
     </div>
+{% endblock %}
+
+{% block js1 %}
+
+    <script>
+        $(function () {
+            $('#jsEditUserBtn').click(function () {
+                let nick_name = $('#nick_name').val()
+                let birth_day = $('#birth_day').val()
+                let gender = $(":checked").val()
+                let address = $('#address').val()
+                let mobile = $('#mobile').val()
+                $.ajax({
+                    type: 'POST',
+                    url: '{% url 'users:user_change_info' %}',
+                    data: {
+                        nick_name: nick_name,
+                        birthday: birth_day,
+                        gender: gender,
+                        address: address,
+                        phone: mobile,
+                        csrfmiddlewaretoken: '{{ csrf_token }}'
+                    },
+                    success: function (callback) {
+                        if (callback.status === 200) {
+                            {#alert(callback.msg)#}
+                            {# refresh window #}
+                            window.location.reload()
+                        } else {
+                            alert(callback.msg)
+                        }
+                    }
+                })
+            })
+        })
+
+    </script>
+
 {% endblock %}
 
