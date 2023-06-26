@@ -1,3 +1,5 @@
+from datetime import datetime
+
 from django.contrib.auth import authenticate, login, logout
 from django.db.models import Q
 from django.http import JsonResponse
@@ -5,7 +7,7 @@ from django.shortcuts import render, redirect, reverse, HttpResponse
 
 from utils.send_mail_tool import send_email_code
 from .forms import UserRegisterForm, UserLoginForm, UserForgetForm, UserResetForm, UserChangeImageForm, \
-    UserChangeInfoForm
+    UserChangeInfoForm, UserChangeEmailForm, UserRestEmailForm
 from .models import UserProfile, EmailVerifyCode
 
 
@@ -209,3 +211,48 @@ def user_change_info(request):
         return JsonResponse({'statsu': '200', 'msg': '修改成功'})
     else:
         return JsonResponse({'statsu': '500', 'msg': '修改失败'})
+
+
+def user_change_email(request):
+    user_change_email_form = UserChangeEmailForm(request.POST)
+    if user_change_email_form.is_valid():
+        email = user_change_email_form.cleaned_data['email']
+        user_list = UserProfile.objects.filter(Q(email=email) | Q(username=email))
+        if user_list:
+            return JsonResponse({'statsu': 500, 'msg': '邮箱已经被绑定'})
+        else:
+            email_verify = EmailVerifyCode.objects.filter(email=email, send_type=3).order_by('-add_time')[0]
+            if email_verify:
+                # 间隔1分钟
+                if (datetime.now() - email_verify.add_time).seconds <= 60:
+                    return JsonResponse({'statsu': 500, 'msg': '请不要重复发送验证码，1分钟后重试'})
+                else:
+                    # send email 可以保留 也可以删除 现在是只保留最后一条
+                    email_verify.delete()
+                    send_email_code(email=email, send_type=3)
+                    return JsonResponse({'statsu': 200, 'msg': '请尽快去邮箱中获取验证码'})
+            else:
+                send_email_code(email=email, send_type=3)
+                return JsonResponse({'statsu': 200, 'msg': '请尽快去邮箱中获取验证码'})
+    else:
+        return JsonResponse({'statsu': 500, 'msg': '您的邮箱有误，请检查后重新填写'})
+
+
+def user_rest_email(request):
+    user_rest_email_form = UserRestEmailForm(request.POST)
+    if user_rest_email_form.is_valid():
+        email = user_rest_email_form.cleaned_data['email']
+        code = user_rest_email_form.cleaned_data['code']
+        email_verify = EmailVerifyCode.objects.filter(email=email, code=code)[0]
+        if email_verify:
+            if (datetime.now() - email_verify.add_time).seconds <= 60:
+                request.user.username = email
+                request.user.email = email
+                request.user.save()
+                return JsonResponse({'statsu': 200, 'msg': '邮箱修改成功'})
+            else:
+                return JsonResponse({'statsu': 500, 'msg': '验证码失效，请重新获取验证码'})
+        else:
+            return JsonResponse({'statsu': 500, 'msg': '您的邮箱或者验证码有误'})
+    else:
+        return JsonResponse({'statsu': 500, 'msg': '您的邮箱或者验证码有误'})

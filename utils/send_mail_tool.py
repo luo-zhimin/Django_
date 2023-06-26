@@ -37,6 +37,7 @@ def send_email_code(email, send_type):
         send_body = '请点击以下链接进行重置您的密码：\n' \
                     'http://localhost:8000/users/user_reset/' + code
     elif send_type == 3:
-        pass
+        send_title = '爱时尚教育修改邮箱验证码'
+        send_body = fr'您的验证码是：{code}'
     # send
     send_mail(send_title, send_body, DEFAULT_FROM_EMAIL, [email])
