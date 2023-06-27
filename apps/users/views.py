@@ -5,6 +5,7 @@ from django.db.models import Q
 from django.http import JsonResponse
 from django.shortcuts import render, redirect, reverse, HttpResponse
 
+from operations.models import UserCourseInfo
 from utils.send_mail_tool import send_email_code
 from .forms import UserRegisterForm, UserLoginForm, UserForgetForm, UserResetForm, UserChangeImageForm, \
     UserChangeInfoForm, UserChangeEmailForm, UserRestEmailForm
@@ -256,3 +257,12 @@ def user_rest_email(request):
             return JsonResponse({'statsu': 500, 'msg': '您的邮箱或者验证码有误'})
     else:
         return JsonResponse({'statsu': 500, 'msg': '您的邮箱或者验证码有误'})
+
+
+def user_course(request):
+    user_courses = UserCourseInfo.objects.filter(study_man=request.user)
+    courses = [userCourse.study_course for userCourse in user_courses]
+
+    return render(request, 'users/usercenter-mycourse.html', {
+        'courses': courses
+    })

@@ -40,8 +40,12 @@
         <div class="wp list personal_list">
             <div class="left">
                 <ul>
-                    <li class="active2"><a href="usercenter-info.html">个人资料</a></li>
-                    <li><a href="usercenter-mycourse.html">我的课程</a></li>
+                    <li {% if request.path == '/users/user_info/' %}class="active2" {% endif %}>
+                        <a href="{% url 'users:user_info' %}">个人资料</a>
+                    </li>
+                    <li {% if request.path == '/users/user_course/' %}class="active2" {% endif %}>
+                        <a href="{% url 'users:user_course' %}">我的课程</a>
+                    </li>
                     <li><a href="usercenter-fav-course.html">我的收藏</a></li>
                     <li>
                         <a href="usercenter-message.html" style="position: relative;">
@@ -121,11 +125,11 @@
                 $.ajax({
                     type: 'POST',
                     url: '{% url 'users:user_change_email' %}',
-                    data:{
-                        email:email,
-                        csrfmiddlewaretoken:'{{ csrf_token }}'
+                    data: {
+                        email: email,
+                        csrfmiddlewaretoken: '{{ csrf_token }}'
                     },
-                    success:function (callback) {
+                    success: function (callback) {
                         alert(callback.msg)
                     }
                 })
@@ -133,28 +137,28 @@
         })
     </script>
     <script>
-    $(function () {
-        $('#jsChangeEmailButton').click(function () {
-            $.ajax({
-                type:'POST',
-                url:'{% url 'users:user_rest_email' %}',
-                data:{
-                    email:$('#jsChangeEmail').val(),
-                    code:$('jsChangeEmailCode').val(),
-                    csrfmiddlewaretoken: '{{ csrf_token }}'
-                },
-                success:function (callback) {
-                    if (callback.status === 200){
-                        alert(callback.msg)
-                        {# 跳转登陆页面  #}
-                        window.location.href = '{% url 'users:user_login' %}'
-                    }else {
-                        alert(callback.msg)
+        $(function () {
+            $('#jsChangeEmailButton').click(function () {
+                $.ajax({
+                    type: 'POST',
+                    url: '{% url 'users:user_rest_email' %}',
+                    data: {
+                        email: $('#jsChangeEmail').val(),
+                        code: $('jsChangeEmailCode').val(),
+                        csrfmiddlewaretoken: '{{ csrf_token }}'
+                    },
+                    success: function (callback) {
+                        if (callback.status === 200) {
+                            alert(callback.msg)
+                            {# 跳转登陆页面  #}
+                            window.location.href = '{% url 'users:user_login' %}'
+                        } else {
+                            alert(callback.msg)
+                        }
                     }
-                }
+                })
             })
         })
-    })
     </script>
     {% block js1 %} {% endblock %}
 {% endblock %}
