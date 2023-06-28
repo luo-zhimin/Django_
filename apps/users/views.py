@@ -5,7 +5,9 @@ from django.db.models import Q
 from django.http import JsonResponse
 from django.shortcuts import render, redirect, reverse, HttpResponse
 
-from operations.models import UserCourseInfo
+from courses.models import CourseInfo
+from operations.models import UserCourseInfo, UserLoveInfo
+from orgs.models import OrgInfo, TeacherInfo
 from utils.send_mail_tool import send_email_code
 from .forms import UserRegisterForm, UserLoginForm, UserForgetForm, UserResetForm, UserChangeImageForm, \
     UserChangeInfoForm, UserChangeEmailForm, UserRestEmailForm
@@ -264,5 +266,32 @@ def user_course(request):
     courses = [userCourse.study_course for userCourse in user_courses]
 
     return render(request, 'users/usercenter-mycourse.html', {
+        'courses': courses
+    })
+
+
+def user_love_org(request):
+    user_love_orgs = UserLoveInfo.objects.filter(love_type=1, love_man=request.user, love_status=True)
+    org_ids = [o.love_id for o in user_love_orgs]
+    orgs = OrgInfo.objects.filter(id__in=org_ids)
+    return render(request, 'users/usercenter-fav-org.html', {
+        'orgs': orgs
+    })
+
+
+def user_love_teacher(request):
+    user_love_teachers = UserLoveInfo.objects.filter(love_type=3, love_man=request.user, love_status=True)
+    teachers_ids = [o.love_id for o in user_love_teachers]
+    teachers = TeacherInfo.objects.filter(id__in=teachers_ids)
+    return render(request, 'users/usercenter-fav-teacher.html', {
+        'teachers': teachers
+    })
+
+
+def user_love_course(request):
+    user_love_courses = UserLoveInfo.objects.filter(love_type=2, love_man=request.user, love_status=True)
+    courses_ids = [o.love_id for o in user_love_courses]
+    courses = CourseInfo.objects.filter(id__in=courses_ids)
+    return render(request, 'users/usercenter-fav-course.html', {
         'courses': courses
     })

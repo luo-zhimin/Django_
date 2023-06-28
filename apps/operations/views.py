@@ -76,3 +76,20 @@ def user_comment(request):
         return JsonResponse({'status': 200, 'msg': '评论成功'})
     else:
         return JsonResponse({'status': 500, 'msg': '评论失败'})
+
+
+def user_delete_love(request):
+    love_id = request.GET.get('love_id', '')
+    love_type = request.GET.get('love_type', '')
+    if love_id and love_type:
+        user_love_info = \
+            UserLoveInfo.objects.filter(love_type=int(love_type), love_id=int(love_id), love_man=request.user,
+                                        love_status=True)[0]
+        if user_love_info:
+            user_love_info.love_status = False
+            user_love_info.save()
+            return JsonResponse({'status': 200, 'msg': '取消成功'})
+        else:
+            pass
+    else:
+        pass

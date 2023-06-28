@@ -17,7 +17,8 @@ Including another URLconf
 from django.urls import path, re_path
 
 from .views import user_register, user_login, user_logout, user_active, user_forget, user_reset, \
-    user_info, user_change_image, user_change_info, user_change_email, user_rest_email, user_course
+    user_info, user_change_image, user_change_info, user_change_email, user_rest_email, user_course, user_love_org, \
+    user_love_course, user_love_teacher
 
 urlpatterns = [
     # name 必须是 'xxx'
@@ -37,4 +38,7 @@ urlpatterns = [
     path('user_rest_email/', user_rest_email, name='user_rest_email'),
 
     path('user_course/', user_course, name='user_course'),
+    path('user_love_org/', user_love_org, name='user_love_org'),
+    path('user_love_teacher/', user_love_teacher, name='user_love_teacher'),
+    path('user_love_course/', user_love_course, name='user_love_course'),
 ]

@@ -16,10 +16,13 @@ Including another URLconf
 """
 from django.urls import path
 
-from .views import user_ask, user_love, user_comment
+from .views import user_ask, user_love, user_delete_love, user_comment
 
 urlpatterns = [
     path('user_ask/', user_ask, name='user_ask'),
+
     path('user_love/', user_love, name='user_love'),
+    path('user_delete_love/', user_delete_love, name='user_delete_love'),
+
     path('user_comment/', user_comment, name='user_comment'),
 ]

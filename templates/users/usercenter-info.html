@@ -1,4 +1,7 @@
 {% extends 'users/user_base.html' %}
+
+{% load static %}
+
 {% block title %}
     个人信息
 {% endblock %}
@@ -86,6 +89,7 @@
 {% endblock %}
 
 {% block js1 %}
+    <script src="{% static 'js/deco-user.js' %}"></script>
 
     {# 修改用户信息 #}
     <script>
