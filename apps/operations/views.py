@@ -3,7 +3,7 @@ from django.http import JsonResponse
 from courses.models import CourseInfo
 from orgs.models import OrgInfo, TeacherInfo
 from .forms import UserAskForm, UserCommentForm
-from .models import UserLoveInfo, UserCommentInfo
+from .models import UserLoveInfo, UserCommentInfo, UserMessageInfo
 
 
 # Create your views here.
@@ -91,5 +91,17 @@ def user_delete_love(request):
             return JsonResponse({'status': 200, 'msg': '取消成功'})
         else:
             pass
+    else:
+        pass
+
+
+def user_message(request):
+    message_id = request.GET.get('message_id', '')
+    status = request.GET.get('status', '')
+    if message_id and status:
+        message = UserMessageInfo.objects.filter(id=int(message_id))[0]
+        message.message_status = status
+        message.save()
+        return JsonResponse({'status': 200, 'msg': '消息已读'})
     else:
         pass

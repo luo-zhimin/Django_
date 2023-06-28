@@ -1,4 +1,4 @@
-from operations.models import UserLoveInfo
+from operations.models import UserLoveInfo, UserMessageInfo
 
 
 def get_love_status(request, love_id, love_type=1):
@@ -19,3 +19,10 @@ def get_love_status(request, love_id, love_type=1):
             return False
     else:
         return False
+
+
+def message_save(request, content):
+    message = UserMessageInfo()
+    message.message_content = content
+    message.message_man = request.user.id
+    message.save()

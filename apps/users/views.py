@@ -6,8 +6,9 @@ from django.http import JsonResponse
 from django.shortcuts import render, redirect, reverse, HttpResponse
 
 from courses.models import CourseInfo
-from operations.models import UserCourseInfo, UserLoveInfo
+from operations.models import UserCourseInfo, UserLoveInfo, UserMessageInfo
 from orgs.models import OrgInfo, TeacherInfo
+from utils import page_tool, common_tool
 from utils.send_mail_tool import send_email_code
 from .forms import UserRegisterForm, UserLoginForm, UserForgetForm, UserResetForm, UserChangeImageForm, \
     UserChangeInfoForm, UserChangeEmailForm, UserRestEmailForm
@@ -52,6 +53,7 @@ def user_register(request):
 
                 # 发送邮件
                 send_email_code(email, 1)
+                common_tool.message_save(request=request, content=fr'欢迎{user.username}注册爱教育系统')
                 # return redirect(reverse('index'))
                 return HttpResponse("请尽快前往您的邮箱进行激活，否则无法登陆")
         else:
@@ -74,6 +76,7 @@ def user_login(request):
                 # 控制是否激活
                 if user.status:
                     login(request, user)
+                    common_tool.message_save(request=request, content=fr'欢迎{user.username}登陆，爱教育系统')
                     return redirect(reverse('index'))
                 else:
                     return HttpResponse("请去您的邮箱进行激活操作，否则无法登陆")
@@ -294,4 +297,13 @@ def user_love_course(request):
     courses = CourseInfo.objects.filter(id__in=courses_ids)
     return render(request, 'users/usercenter-fav-course.html', {
         'courses': courses
+    })
+
+
+def user_message(request):
+    messages = UserMessageInfo.objects.filter(message_man=request.user.id).order_by('-add_time')
+    pages = page_tool.page(request, messages)
+    return render(request, 'users/usercenter-message.html', {
+        'messages': messages,
+        'pages': pages
     })
