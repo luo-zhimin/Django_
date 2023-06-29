@@ -1,3 +1,4 @@
+from django.db.models import Q
 from django.shortcuts import render
 
 from operations.models import UserCommentInfo
@@ -17,6 +18,10 @@ def course_list(request):
         print(fr'-{sort}')
         all_courses = all_courses.order_by(fr'-{sort}')
 
+    keyword = request.GET.get('keyword', '')
+    if keyword:
+        all_courses = all_courses.filter(
+            Q(name__icontains=keyword) | Q(desc__icontains=keyword) | Q(detail__icontains=keyword))
     # 分页
     pages = page(request, all_courses)
 
@@ -24,7 +29,8 @@ def course_list(request):
         'all_courses': all_courses,
         'recommend_courses': recommend_courses,
         'pages': pages,
-        'sort': sort
+        'sort': sort,
+        'keyword': keyword
     })
 
 

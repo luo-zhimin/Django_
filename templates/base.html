@@ -183,6 +183,50 @@
 
 <script type="text/javascript" src="{% static 'js/index.js' %}"></script>
 
+<script>
+
+    {# overall situation search  #}
+    $(function () {
+        $('#jsSearchBtn').click(function () {
+            let operation_type = $('#jsSelectOption').attr('data-value')
+            let search_name = $('#search_keywords').val()
+            let url = ''
+
+            switch (operation_type) {
+                case 'org':
+                    url = '{% url 'orgs:org_list' %}'
+                    break;
+                case "course":
+                    url = '{% url 'courses:course_list' %}'
+                    break;
+                case "teacher":
+                    url = '{% url 'orgs:teacher_list' %}'
+                    break;
+            }
+
+            url = url + '?keyword=' + search_name
+            window.location.href = url
+
+            {#$.ajax({#}
+            {#    type: "GET",#}
+            {#    url: url,#}
+            {#    data: {#}
+            {#        type: operation_type,#}
+            {#        name: search_name#}
+            {#    },#}
+            {#    success: function (callback) {#}
+            {#        if(callback.status === 200){#}
+            {#            alert(callback.msg)#}
+            {#        }else {#}
+            {#            alert(callback.msg)#}
+            {#        }#}
+            {#    }#}
+            {# }) #}
+        })
+    })
+
+</script>
+
 {% block js %} {% endblock %}
 </body>
 </html>

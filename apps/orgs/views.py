@@ -1,3 +1,4 @@
+from django.db.models import Q
 from django.shortcuts import render
 
 from utils.common_tool import get_love_status
@@ -11,6 +12,13 @@ def org_list(request):
     all_cites = CityInfo.objects.all()
     # 倒叙 切分3
     sort_orgs = all_orgs.order_by('-love_num')[:3]
+
+    # 全局搜索
+    keyword = request.GET.get('keyword', '')
+    if keyword:
+        all_orgs = all_orgs.filter(
+            Q(name__icontains=keyword) | Q(remark__icontains=keyword) | Q(detail__icontains=keyword))
+
     # 按照机构类别进行过滤
     category = request.GET.get('category', '')
     if category:
@@ -35,7 +43,8 @@ def org_list(request):
         'sort_orgs': sort_orgs,
         'category': category,
         'city_id': city_id,
-        'sort': sort
+        'sort': sort,
+        'keyword': keyword
     })
 
 
@@ -101,12 +110,17 @@ def teacher_list(request):
         # print(fr'-{sort}')
         teachers = teachers.order_by(fr'-{sort}')
 
+    keyword = request.GET.get('keyword', '')
+    if keyword:
+        teachers = teachers.filter(name__icontains=keyword)
+
     pages = page(request, teachers)
     return render(request, 'orgs/teachers-list.html', {
         'teachers': teachers,
         'sort_teachers': sort_teachers,
         'pages': pages,
-        'sort': sort
+        'sort': sort,
+        'keyword': keyword
     })
 
 

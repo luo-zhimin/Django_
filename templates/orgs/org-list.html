@@ -164,7 +164,8 @@
                         <ul class="pagelist">
                             {% if pages.has_previous %}
                                 <li class="long">
-                                    <a href="?pagenum={{ pages.previous_page_number }}&category={{ category }}&city_id={{ city_id }}&sort={{ sort }}">
+                                    <a href="?pagenum={{ pages.previous_page_number }}&category={{ category }}
+                                    &city_id={{ city_id }}&sort={{ sort }}&keyword={{ keyword }}">
                                         上一页
                                     </a>
                                 </li>
@@ -177,7 +178,8 @@
                                             class="active"
                                         {% endif %}
                                 >
-                                    <a href="?pagenum={{ num }}&category={{ category }}&city_id={{ city_id }}&sort={{ sort }}">
+                                    <a href="?pagenum={{ num }}&category={{ category }}&
+                                    city_id={{ city_id }}&sort={{ sort }}&keyword={{ keyword }}">
                                         {{ num }}
                                     </a>
                                 </li>
@@ -185,7 +187,8 @@
 
                             {% if pages.has_next %}
                                 <li class="long">
-                                    <a href="?pagenum={{ pages.next_page_number }}&category={{ category }}&city_id={{ city_id }}&sort={{ sort }}">
+                                    <a href="?pagenum={{ pages.next_page_number }}&category={{ category }}
+                                    &city_id={{ city_id }}&sort={{ sort }}&keyword={{ keyword }}">
                                         下一页
                                     </a>
                                 </li>
