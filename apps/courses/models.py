@@ -1,5 +1,7 @@
-from django.db import models
 from datetime import datetime
+
+from django.db import models
+
 from orgs.models import OrgInfo, TeacherInfo
 
 
@@ -7,6 +9,7 @@ from orgs.models import OrgInfo, TeacherInfo
 class CourseInfo(models.Model):
     image = models.ImageField(upload_to='course/', verbose_name='课程封面', max_length=200)
     name = models.CharField(max_length=20, verbose_name='课程名称')
+    is_banner = models.BooleanField(default=False, verbose_name='是否轮播')
 
     study_time = models.IntegerField(default=0, verbose_name='学习时长')
     study_num = models.IntegerField(default=0, verbose_name='学习人数')

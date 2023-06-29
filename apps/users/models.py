@@ -20,6 +20,10 @@ class UserProfile(AbstractUser):
     def __str__(self):
         return self.username
 
+    def get_message_count(self):
+        from operations.models import UserMessageInfo
+        return UserMessageInfo.objects.filter(message_status=False, message_man=self.id).count()
+
     class Meta:
         verbose_name = '用户信息'
         verbose_name_plural = verbose_name

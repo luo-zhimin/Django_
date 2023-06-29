@@ -13,13 +13,14 @@
             <div class="fl">
                 <div class="imgslide">
                     <ul class="imgs">
-
-                        <li>
-                            <a href="http://www.imooc.com">
-                                <img width="1200" height="478" src="{% static 'images/banner1.jpg' %}"/>
-                            </a>
-                        </li>
-
+                        {% for banner in banners %}
+                            <li>
+                                <a href="{{ banner.url }}">
+                                    <img width="1200" height="478" src="{{ MEDIA_URL }}{{ banner.image }}"
+                                         alt="{{ banner.id }}"/>
+                                </a>
+                            </li>
+                        {% endfor %}
                     </ul>
                 </div>
                 <div class="unslider-arrow prev"></div>
@@ -34,19 +35,19 @@
         <div class="wp">
             <ul class="feature">
                 <li class="feature1">
-                    <img class="pic" src="{% static 'images/feature5.png' %}"/>
+                    <img class="pic" src="{% static 'images/feature5.png' %}" alt="23:04"/>
                     <p class="center">专业权威</p>
                 </li>
                 <li class="feature2">
-                    <img class="pic" src="{% static 'images/feature5.png' %}"/>
+                    <img class="pic" src="{% static 'images/feature5.png' %}" alt="23:04"/>
                     <p class="center">课程最新</p>
                 </li>
                 <li class="feature3">
-                    <img class="pic" src="{% static 'images/feature5.png' %}"/>
+                    <img class="pic" src="{% static 'images/feature5.png' %}" alt="23:04"/>
                     <p class="center">名师授课</p>
                 </li>
                 <li class="feature4">
-                    <img class="pic" src="{% static 'images/feature5.png' %}"/>
+                    <img class="pic" src="{% static 'images/feature5.png' %}" alt="23:04"/>
                     <p class="center">数据真实</p>
                 </li>
             </ul>
@@ -68,23 +69,51 @@
                             <div class="imgslide2">
                                 <ul class="imgs">
 
-                                    <li>
-                                        <a href="course-detail.html">
-                                            <img width="470" height="300" src="{% static 'images/mysql.jpg' %}"/>
-                                        </a>
-                                    </li>
-
-                                    <li>
-                                        <a href="course-detail.html">
-                                            <img width="470" height="300" src="{% static 'images/mongoDB.jpg' %}"/>
-                                        </a>
-                                    </li>
+                                    {% for banner_cours in banner_courses %}
+                                        <li>
+                                            <a href="{% url 'courses:course_detail' banner_cours.id %}">
+                                                <img width="470" height="300"
+                                                     src="{{ MEDIA_URL }}{{ banner_cours.image }}"
+                                                     alt="{{ banner_cours.name }}"/>
+                                            </a>
+                                        </li>
+                                    {% endfor %}
 
                                 </ul>
                             </div>
                             <div class="unslider-arrow2 prev"></div>
                             <div class="unslider-arrow2 next"></div>
                         </div>
+
+                        {% for course in courses %}
+                            <div class="module1_{{ forloop.counter|add:"2" }} box">
+                                <a href="{% url 'courses:course_detail' course.id %}">
+                                    <img width="233" height="190" src="{{ MEDIA_URL }}{{ course.image }}"
+                                         alt="{{ course.name }}"/>
+                                </a>
+                                <div class="des">
+                                    <a href="{% url 'courses:course_detail' course.id %}">
+                                        <h2 title="{{ course.name }}">{{ course.name }}</h2>
+                                    </a>
+
+                                    <span class="fl">难度：
+                                        <i class="key">
+                                            {% if course.level == 'cj' %} 初级
+                                            {% elif course.level == 'zj' %} 中级
+                                            {% else %} 高级
+                                            {% endif %}
+                                        </i>
+                                    </span>
+
+                                    <span class="fr">学习人数：{{ course.study_num }}</span>
+                                </div>
+                                <div class="bottom">
+                                    <span class="fl"
+                                          title="{{ course.org_info.name }}">{{ course.org_info.name }}</span>
+                                    <span class="star fr">{{ course.love_num }}</span>
+                                </div>
+                            </div>
+                        {% endfor %}
 
                     </div>
                 </div>
@@ -100,25 +129,26 @@
                     <div class="module3_1 left">
                         <img width="228" height="463" src="{% static 'images/module6_1.jpg' %}"/>
                         <p class="fisrt_word">名校来袭<br/>权威认证</p>
-                        <a class="more" href="orgs/org-list.html">查看更多机构 ></a>
+                        <a class="more" href="{% url 'orgs:org_list' %}">查看更多机构 ></a>
                     </div>
                     <div class="right">
                         <ul>
-
-                            <li class="">
-                                <a href="orgs/org-detail-homepage.html">
-                                    <div class="company">
-                                        <img width="184" height="100" src="{% static 'images/org.png' %}"/>
-                                        <div class="score">
-                                            <div class="circle">
-                                                <h2>全国知名</h2>
+                            {% for org in orgs %}
+                                <li class="">
+                                    <a href="{% url 'orgs:org_detail' org.id %}">
+                                        <div class="company">
+                                            <img width="184" height="100" src="{{ MEDIA_URL }}{{ org.image }}"
+                                                 alt="{{ org.name }}"/>
+                                            <div class="score">
+                                                <div class="circle">
+                                                    <h2>全国知名</h2>
+                                                </div>
                                             </div>
                                         </div>
-                                    </div>
-                                    <p><span class="key" title="爱时尚教育网">爱时尚教育网</span></p>
-                                </a>
-                            </li>
-
+                                        <p><span class="key" title="{{ org.name }}">{{ org.name }}</span></p>
+                                    </a>
+                                </li>
+                            {% endfor %}
                         </ul>
                     </div>
                 </div>

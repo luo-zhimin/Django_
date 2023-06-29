@@ -12,13 +12,22 @@ from utils import page_tool, common_tool
 from utils.send_mail_tool import send_email_code
 from .forms import UserRegisterForm, UserLoginForm, UserForgetForm, UserResetForm, UserChangeImageForm, \
     UserChangeInfoForm, UserChangeEmailForm, UserRestEmailForm
-from .models import UserProfile, EmailVerifyCode
+from .models import UserProfile, EmailVerifyCode, BannerInfo
 
 
 # Create your views here.
 # index
 def index(request):
-    return render(request, 'index.html')
+    banners = BannerInfo.objects.all().order_by('-add_time')[:5]
+    courses = CourseInfo.objects.filter(is_banner=False).all().order_by('-add_time')[:6]
+    banner_courses = CourseInfo.objects.filter(is_banner=True).all().order_by('-add_time')[:6]
+    orgs = OrgInfo.objects.all().order_by('-add_time')[:15]
+    return render(request, 'index.html', {
+        'banners': banners,
+        'banner_courses': banner_courses,
+        'courses': courses,
+        'orgs': orgs
+    })
 
 
 def user_register(request):
