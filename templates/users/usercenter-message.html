@@ -99,6 +99,8 @@
                         if (callback.status === 200) {
                             {#alert(callback.msg)#}
                             window.location.reload()
+                        } else if (callback.status === 403) {
+                            window.location.href = '{% url 'users:user_login' %}'
                         } else {
                             alert(callback.msg)
                         }

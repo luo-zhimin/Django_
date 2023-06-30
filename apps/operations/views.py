@@ -2,6 +2,7 @@ from django.http import JsonResponse
 
 from courses.models import CourseInfo
 from orgs.models import OrgInfo, TeacherInfo
+from utils.decorators import login_decorators
 from .forms import UserAskForm, UserCommentForm
 from .models import UserLoveInfo, UserCommentInfo, UserMessageInfo
 
@@ -19,15 +20,16 @@ def user_ask(request):
         return JsonResponse({'status': 500, 'msg': '咨询失败'})
 
 
+@login_decorators
 def user_love(request):
     love_id = request.GET.get('love_id', '')
     love_type = request.GET.get('love_type', '')
     if love_id and love_type:
         # 需要判断请求 不然一刷新页面就当于一次新的请求
         data = None
-        if love_type == 1:
+        if love_type == '1':
             data = OrgInfo.objects.filter(id=int(love_id))[0]
-        elif love_type == 2:
+        elif love_type == '2':
             data = CourseInfo.objects.filter(id=int(love_id))[0]
         else:
             data = TeacherInfo.objects.filter(id=int(love_id))[0]
@@ -65,6 +67,7 @@ def user_love(request):
         return JsonResponse({'status': 500, 'msg': '参数异常'})
 
 
+@login_decorators
 def user_comment(request):
     user_comment_form = UserCommentForm(request.POST)
     if user_comment_form.is_valid():
@@ -77,7 +80,7 @@ def user_comment(request):
     else:
         return JsonResponse({'status': 500, 'msg': '评论失败'})
 
-
+@login_decorators
 def user_delete_love(request):
     love_id = request.GET.get('love_id', '')
     love_type = request.GET.get('love_type', '')
@@ -94,7 +97,7 @@ def user_delete_love(request):
     else:
         pass
 
-
+@login_decorators
 def user_message(request):
     message_id = request.GET.get('message_id', '')
     status = request.GET.get('status', '')

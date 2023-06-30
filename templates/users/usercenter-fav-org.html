@@ -91,6 +91,8 @@
                             alert(callback.msg)
                             {#window.location.reload()#}
                             obj.parents('.des').remove()
+                        } else if (callback.status === 403) {
+                            window.location.href = '{% url 'users:user_login' %}'
                         } else {
                             alert(callback.msg)
                         }

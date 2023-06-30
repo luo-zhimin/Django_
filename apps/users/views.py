@@ -86,7 +86,12 @@ def user_login(request):
                 if user.status:
                     login(request, user)
                     common_tool.message_save(request=request, content=fr'欢迎{user.username}登陆，爱教育系统')
-                    return redirect(reverse('index'))
+                    # 登陆跳转 从哪里来 回哪里去
+                    url = request.COOKIES.get('url', '/')
+                    ret = redirect(url)
+                    # 删除上一个cookie
+                    ret.delete_cookie('url')
+                    return ret
                 else:
                     return HttpResponse("请去您的邮箱进行激活操作，否则无法登陆")
             else:

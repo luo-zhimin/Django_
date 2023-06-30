@@ -267,6 +267,8 @@
                             $('#courseName').val('');
                             {#alert(callback.msg)#}
                             $('#jsCompanyTips').text('')
+                        } else if (callback.status === 403) {
+                            window.location.href = '{% url 'users:user_login' %}'
                         } else {
                             {#alert(callback.msg)#}
                             $('#jsCompanyTips').text(callback.msg)

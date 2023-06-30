@@ -148,7 +148,8 @@
                                              height='80' alt="{{ course.teacher_info.name }}"/>
                                     </a>
                                     <span class="tit">
-                                        <a href="{% url 'orgs:teacher_detail' course.teacher_info.id %}" target="_blank">
+                                        <a href="{% url 'orgs:teacher_detail' course.teacher_info.id %}"
+                                           target="_blank">
                                             {{ course.teacher_info.name }}
                                         </a>
                                     </span>
@@ -231,6 +232,8 @@
                             {#页面刷新 纯前端#}
                             {#$('#js-pl-textarea').val('');#}
                             window.location.reload();
+                        } else if (callback.status === 403) {
+                            window.location.href = '{% url 'users:user_login' %}'
                         } else {
                             alert(callback.msg)
                         }

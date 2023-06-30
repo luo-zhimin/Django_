@@ -39,7 +39,8 @@
                     {% for course in courses %}
                         <div class="module1_5 box">
                             <a href="{% url 'courses:course_detail' course.id %}">
-                                <img width="214" height="190" src="{{ MEDIA_URL }}{{ course.image }}" alt="{{ course.name }}"/>
+                                <img width="214" height="190" src="{{ MEDIA_URL }}{{ course.image }}"
+                                     alt="{{ course.name }}"/>
                             </a>
                             <div class="des">
                                 <a href="{% url 'courses:course_detail' course.id %}"><h2>{{ course.name }}</h2></a>
@@ -80,6 +81,8 @@
                             alert(callback.msg)
                             {#window.location.reload()#}
                             obj.parents('.module1_5').remove()
+                        } else if (callback.status === 403) {
+                            window.location.href = '{% url 'users:user_login' %}'
                         } else {
                             alert(callback.msg)
                         }

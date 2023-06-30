@@ -19,7 +19,7 @@
                  alt="{{ org.name }}"/>
             <div class="head fl">
                 <h1>
-{#                    爱时尚教育网#}
+                    {#                    爱时尚教育网#}
                     {{ org.name }}
                     <img src="{% static 'images/authentication.png' %}" alt="认证"/>
                     <img src="{% static 'images/gold.png' %}" alt="金牌"/>
@@ -32,7 +32,7 @@
             </div>
             <div class="btn fr collectionbtn  notlogin
                  " data-favid="22" data-fav-type="1" id="love">
-                 {% if love_status %} 取消收藏 {% else %} 收藏 {% endif %}
+                {% if love_status %} 取消收藏 {% else %} 收藏 {% endif %}
             </div>
 
         </div>
@@ -132,6 +132,8 @@
                 success: function (callback) {
                     if (callback.status === 200) {
                         $('#love').text(callback.msg)
+                    } else if (callback.status === 403) {
+                        window.location.href = '{% url 'users:user_login' %}'
                     } else {
                         alert(callback.msg)
                     }

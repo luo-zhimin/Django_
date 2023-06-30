@@ -177,6 +177,8 @@
                 success: function (callback) {
                     if (callback.status === 200) {
                         $('#jsRightBtn').text(callback.msg)
+                    } else if (callback.status === 403) {
+                        window.location.href = '{% url 'users:user_login' %}'
                     } else {
                         alert(callback.msg)
                     }

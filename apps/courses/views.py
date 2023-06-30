@@ -4,6 +4,8 @@ from django.shortcuts import render
 from operations.models import UserCommentInfo
 from operations.models import UserCourseInfo
 from utils.common_tool import get_love_status
+# from django.contrib.auth.decorators import login_required
+from utils.decorators import login_decorators
 from utils.page_tool import page
 from .models import CourseInfo
 
@@ -56,6 +58,8 @@ def course_detail(request, course_id):
         })
 
 
+# @login_required(login_url='/users/user_login')
+@login_decorators
 def course_video(request, course_id):
     if course_id:
         course = CourseInfo.objects.filter(id=int(course_id))[0]
