@@ -14,15 +14,16 @@ Including another URLconf
     1. Import the include() function: from django.urls import include, path
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
+from django.conf.urls.static import static
 from django.contrib import admin
 from django.urls import path, include
-from django.conf.urls.static import static
+
 from Django_ import settings
-from users.views import index
+from users.views import IndexView
 
 urlpatterns = [
     # 首页直接进行跳转
-    path('', index, name='index'),
+    path('', IndexView.as_view(), name='index'),
     path('admin/', admin.site.urls),
     path('captcha/', include('captcha.urls')),
     # path('xadmin/', xadmin.site.urls),

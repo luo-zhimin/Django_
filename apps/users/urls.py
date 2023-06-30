@@ -16,31 +16,31 @@ Including another URLconf
 """
 from django.urls import path, re_path
 
-from .views import user_register, user_login, user_logout, user_active, user_forget, user_reset, \
-    user_info, user_change_image, user_change_info, user_change_email, user_rest_email, user_course, user_love_org, \
-    user_love_course, user_love_teacher, user_message
+from .views import UserRegisterView, UserLoginView, UserLogoutView, UserActiveView, UserForgetView, UserResetView, \
+    UserInfoView, UserChangeImageView, UserChangeInfoView, UserChangeEmailView, UserRestEmailView, UserCourseView, \
+    UserLoveOrgView, UserLoveCourseView, UserLoveTeacherView, UserMessageView
 
 urlpatterns = [
     # name 必须是 'xxx'
-    path('user_register/', user_register, name='user_register'),
-    path('user_login/', user_login, name='user_login'),
-    path('user_logout/', user_logout, name='user_logout'),
+    path('user_register/', UserRegisterView.as_view(), name='user_register'),
+    path('user_login/', UserLoginView.as_view(), name='user_login'),
+    path('user_logout/', UserLogoutView.as_view(), name='user_logout'),
     # 如果要使用正则表达式 需要使用re_path
-    re_path('user_active/(\\w+)/', user_active, name='user_active'),
+    re_path('user_active/(\\w+)/', UserActiveView.as_view(), name='user_active'),
 
-    path('user_forget/', user_forget, name='user_forget'),
-    re_path('user_reset/(\\w+)/', user_reset, name='user_reset'),
+    path('user_forget/', UserForgetView.as_view(), name='user_forget'),
+    re_path('user_reset/(\\w+)/', UserResetView.as_view(), name='user_reset'),
 
-    path('user_info/', user_info, name='user_info'),
-    path('user_change_image/', user_change_image, name='user_change_image'),
-    path('user_change_info/', user_change_info, name='user_change_info'),
-    path('user_change_email/', user_change_email, name='user_change_email'),
-    path('user_rest_email/', user_rest_email, name='user_rest_email'),
+    path('user_info/', UserInfoView.as_view(), name='user_info'),
+    path('user_change_image/', UserChangeImageView.as_view(), name='user_change_image'),
+    path('user_change_info/', UserChangeInfoView.as_view(), name='user_change_info'),
+    path('user_change_email/', UserChangeEmailView.as_view(), name='user_change_email'),
+    path('user_rest_email/', UserRestEmailView.as_view(), name='user_rest_email'),
 
-    path('user_course/', user_course, name='user_course'),
-    path('user_love_org/', user_love_org, name='user_love_org'),
-    path('user_love_teacher/', user_love_teacher, name='user_love_teacher'),
-    path('user_love_course/', user_love_course, name='user_love_course'),
+    path('user_course/', UserCourseView.as_view(), name='user_course'),
+    path('user_love_org/', UserLoveOrgView.as_view(), name='user_love_org'),
+    path('user_love_teacher/', UserLoveTeacherView.as_view(), name='user_love_teacher'),
+    path('user_love_course/', UserLoveCourseView.as_view(), name='user_love_course'),
 
-    path('user_message/', user_message, name='user_message'),
+    path('user_message/', UserMessageView.as_view(), name='user_message'),
 ]

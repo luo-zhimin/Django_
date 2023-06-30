@@ -80,6 +80,7 @@ def user_comment(request):
     else:
         return JsonResponse({'status': 500, 'msg': '评论失败'})
 
+
 @login_decorators
 def user_delete_love(request):
     love_id = request.GET.get('love_id', '')
@@ -96,6 +97,7 @@ def user_delete_love(request):
             pass
     else:
         pass
+
 
 @login_decorators
 def user_message(request):
