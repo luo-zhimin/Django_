@@ -16,14 +16,14 @@ Including another URLconf
 """
 from django.urls import path
 
-from .views import user_ask, user_love, user_delete_love, user_comment, user_message
+from .views import UserAskView, UserLoveView, UserDeleteLoveView, UserCommentView, UserMessageView
 
 urlpatterns = [
-    path('user_ask/', user_ask, name='user_ask'),
+    path('user_ask/', UserAskView.as_view(), name='user_ask'),
 
-    path('user_love/', user_love, name='user_love'),
-    path('user_delete_love/', user_delete_love, name='user_delete_love'),
+    path('user_love/', UserLoveView.as_view(), name='user_love'),
+    path('user_delete_love/', UserDeleteLoveView.as_view(), name='user_delete_love'),
 
-    path('user_comment/', user_comment, name='user_comment'),
-    path('user_message/', user_message, name='user_message'),
+    path('user_comment/', UserCommentView.as_view(), name='user_comment'),
+    path('user_message/', UserMessageView.as_view(), name='user_message'),
 ]

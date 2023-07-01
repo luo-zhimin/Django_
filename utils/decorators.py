@@ -7,16 +7,18 @@ from django.shortcuts import reverse, redirect
 def login_decorators(fun):
     def inner(request, *args, **kwargs):
         # print(request.user.is_authenticated)
-        if request.user.is_authenticated:
+        # if request.user.is_authenticated:
+        # View -> request.request
+        if request.request.user.is_authenticated:
             print(22)
             return fun(request, *args, **kwargs)
         else:
             # ajax
             # print(request.is_ajax)
             # if request.is_ajax():
-            url = request.get_full_path()
+            url = request.request.get_full_path()
             print('login_decorators-> ', url)
-            if request.META.get('HTTP_X_REQUESTED_WITH') == 'XMLHttpRequest':
+            if request.request.META.get('HTTP_X_REQUESTED_WITH') == 'XMLHttpRequest':
                 # return JsonResponse({'status', 403})
                 return JsonResponse({'status': 403})
 

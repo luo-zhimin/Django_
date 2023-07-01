@@ -16,11 +16,11 @@ Including another URLconf
 """
 from django.urls import path, re_path
 
-from .views import course_list, course_detail, course_video, course_comment
+from .views import CourseListView, CourseDetailView, CourseVideoView, CourseCommentView
 
 urlpatterns = [
-    path('course_list/', course_list, name='course_list'),
-    re_path('course_detail/(\\d+)', course_detail, name='course_detail'),
-    re_path('course_video/(\\d+)', course_video, name='course_video'),
-    re_path('course_comment/(\\d+)', course_comment, name='course_comment'),
+    path('course_list/', CourseListView.as_view(), name='course_list'),
+    re_path('course_detail/(\\d+)', CourseDetailView.as_view(), name='course_detail'),
+    re_path('course_video/(\\d+)', CourseVideoView.as_view(), name='course_video'),
+    re_path('course_comment/(\\d+)', CourseCommentView.as_view(), name='course_comment'),
 ]
