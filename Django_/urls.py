@@ -26,6 +26,9 @@ urlpatterns = [
     path('', IndexView.as_view(), name='index'),
     path('admin/', admin.site.urls),
     path('captcha/', include('captcha.urls')),
+    path('ckeditor/', include('ckeditor_uploader.urls')),
+    # version more better I have last version
+    # path('ueditor/', include('DjangoUeditor.urls')),
     # path('xadmin/', xadmin.site.urls),
     path('users/', include(('users.urls', 'users'), namespace='users')),
     path('courses/', include(('courses.urls', 'courses'), namespace='courses')),

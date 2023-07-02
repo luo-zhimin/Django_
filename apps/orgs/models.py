@@ -1,5 +1,7 @@
-from django.db import models
 from datetime import datetime
+
+from ckeditor_uploader.fields import RichTextUploadingField
+from django.db import models
 
 
 # Create your models here.
@@ -26,7 +28,8 @@ class OrgInfo(models.Model):
 
     address = models.CharField(max_length=200, verbose_name='机构地址')
     remark = models.CharField(max_length=200, verbose_name='机构简介')
-    detail = models.TextField(verbose_name='机构详情')
+    # detail = models.TextField(verbose_name='机构详情')
+    detail = RichTextUploadingField(default='', verbose_name='机构详情')
     category = models.CharField(choices=(('pxjg', '培训机构'), ('gx', '高校'), ('gr', '个人')), max_length=10,
                                 verbose_name='机构类别')
     # 关联关系

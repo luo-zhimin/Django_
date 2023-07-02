@@ -1,5 +1,6 @@
 from datetime import datetime
 
+from ckeditor_uploader.fields import RichTextUploadingField
 from django.db import models
 
 from orgs.models import OrgInfo, TeacherInfo
@@ -20,7 +21,8 @@ class CourseInfo(models.Model):
     click_num = models.IntegerField(default=0, verbose_name='访问量')
 
     desc = models.CharField(verbose_name='课程简介', max_length=200)
-    detail = models.TextField(verbose_name='课程详情')
+    # detail = models.TextField(verbose_name='课程详情')
+    detail = RichTextUploadingField(default='', verbose_name='课程详情')
 
     category = models.CharField(choices=(('qd', '前端开发'), ('hd', '后端开发')), default='hd',
                                 verbose_name='课程类别', max_length=20)

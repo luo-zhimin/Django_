@@ -49,6 +49,9 @@ INSTALLED_APPS = [
     # 'xadmin',
     # 'crispy_forms'
     'captcha',
+    # 'DjangoUeditor'
+    'ckeditor',
+    'ckeditor_uploader'
 ]
 
 AUTH_USER_MODEL = 'users.UserProfile'
@@ -154,3 +157,12 @@ EMAIL_HOST_USER = 'luozhimin2023@163.com'
 EMAIL_HOST_PASSWORD = 'SSOYMEHDYFTNRKNQ'
 DEFAULT_FROM_EMAIL = 'luozhimin2023@163.com'
 # EMAIL_USE_TLS = True
+
+CKEDITOR_CONFIGS = {
+    'default': {
+        'toolbar': 'full',  # 工具条功能
+        'weight': 300,
+        'height': 300
+    }
+}
+CKEDITOR_UPLOAD_PATH = '/ckeditor/'
