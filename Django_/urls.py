@@ -22,16 +22,19 @@ from Django_ import settings
 from users.views import IndexView
 
 urlpatterns = [
-    # 首页直接进行跳转
-    path('', IndexView.as_view(), name='index'),
-    path('admin/', admin.site.urls),
-    path('captcha/', include('captcha.urls')),
-    path('ckeditor/', include('ckeditor_uploader.urls')),
-    # version more better I have last version
-    # path('ueditor/', include('DjangoUeditor.urls')),
-    # path('xadmin/', xadmin.site.urls),
-    path('users/', include(('users.urls', 'users'), namespace='users')),
-    path('courses/', include(('courses.urls', 'courses'), namespace='courses')),
-    path('orgs/', include(('orgs.urls', 'orgs'), namespace='orgs')),
-    path('operations/', include(('operations.urls', 'operations'), namespace='operations')),
-] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+                  # 首页直接进行跳转
+                  path('', IndexView.as_view(), name='index'),
+                  path('admin/', admin.site.urls),
+                  path('captcha/', include('captcha.urls')),
+                  path('ckeditor/', include('ckeditor_uploader.urls')),
+                  # version more better I have last version
+                  # path('ueditor/', include('DjangoUeditor.urls')),
+                  # path('xadmin/', xadmin.site.urls),
+                  path('users/', include(('users.urls', 'users'), namespace='users')),
+                  path('courses/', include(('courses.urls', 'courses'), namespace='courses')),
+                  path('orgs/', include(('orgs.urls', 'orgs'), namespace='orgs')),
+                  path('operations/', include(('operations.urls', 'operations'), namespace='operations')),
+              ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+
+handler404 = 'users.views.handle_404'
+handler500 = 'users.views.handler_500'

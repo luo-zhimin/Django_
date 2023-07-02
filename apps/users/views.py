@@ -634,6 +634,7 @@ class UserMessageView(View):
             'pages': pages
         })
 
+
 # def user_message(request):
 #     messages = UserMessageInfo.objects.filter(message_man=request.user.id).order_by('-add_time')
 #     pages = page_tool.page(request, messages)
@@ -641,3 +642,10 @@ class UserMessageView(View):
 #         'messages': messages,
 #         'pages': pages
 #     })
+
+def handle_404(request, exception):
+    return render(request, 'handle_404.html', status=404)
+
+
+def handler_500(request):
+    return render(request, 'handler_500.html', status=404)

@@ -17,7 +17,7 @@ from pathlib import Path
 BASE_DIR = Path(__file__).resolve().parent.parent
 # python 环境变量
 sys.path.insert(0, os.path.join(BASE_DIR, 'apps'))
-sys.path.insert(0, os.path.join(BASE_DIR, 'extra_apps'))
+# sys.path.insert(0, os.path.join(BASE_DIR, 'extra_apps'))
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/4.2/howto/deployment/checklist/
@@ -165,4 +165,5 @@ CKEDITOR_CONFIGS = {
         'height': 300
     }
 }
+# 需要配置一个configs 里面有 upload_url
 CKEDITOR_UPLOAD_PATH = '/ckeditor/'
